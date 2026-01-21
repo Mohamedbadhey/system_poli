@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Case Management System - Login</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .language-selector select {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .language-selector select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+    </style>
+</head>
+<body class="login-page">
+    <div class="language-selector">
+        <select id="loginLanguageSelector" onchange="changeLanguage(this.value)">
+            <option value="en">🇬🇧 English</option>
+            <option value="so">🇸🇴 Soomaali</option>
+        </select>
+    </div>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="logo-section">
+                <img src="assets/images/logo.png" alt="Police Logo" class="login-logo">
+                <h1 data-i18n="police_case_management_system">Police Case Management System</h1>
+                <p data-i18n="secure_efficient_transparent">Secure · Efficient · Transparent</p>
+            </div>
+            <div class="features">
+                <div class="feature-item">
+                    <i class="fas fa-lock"></i>
+                    <span data-i18n="government_grade_security">Government-Grade Security</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-fingerprint"></i>
+                    <span data-i18n="biometric_integration">Biometric Integration</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span data-i18n="realtime_analytics">Real-time Analytics</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="login-right">
+            <div class="login-form-container">
+                <h2 data-i18n="welcome_back">Welcome Back</h2>
+                <p class="subtitle" data-i18n="please_login">Please login to your account</p>
+                
+                <div id="loginAlert" class="alert" style="display: none;"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i> <span data-i18n="username">Username</span>
+                        </label>
+                        <input type="text" id="username" name="username" required 
+                               data-i18n-placeholder="enter_username" placeholder="Enter your username" autocomplete="username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i> <span data-i18n="password">Password</span>
+                        </label>
+                        <input type="password" id="password" name="password" required 
+                               data-i18n-placeholder="enter_password" placeholder="Enter your password" autocomplete="current-password">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> <span data-i18n="login">Login</span>
+                    </button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>&copy; 2024 <span data-i18n="police_case_management_system">Police Case Management System</span>. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/language.js?v=1768584526"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        // Set language selector on load
+        $(document).ready(function() {
+            const savedLang = localStorage.getItem('user_language') || 'en';
+            $('#loginLanguageSelector').val(savedLang);
+        });
+    </script>
+</body>
+</html>

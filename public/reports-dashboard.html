@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports Dashboard - PCMS</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    
+    <style>
+        .report-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .report-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .report-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #007bff;
+        }
+        
+        .report-type-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+        
+        .stat-card p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .timeline-item {
+            border-left: 3px solid #007bff;
+            padding-left: 20px;
+            padding-bottom: 20px;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #007bff;
+            border-radius: 50%;
+            position: absolute;
+            left: -7.5px;
+            top: 0;
+        }
+        
+        #reportEditorModal .modal-dialog {
+            max-width: 900px;
+        }
+        
+        #reportContent {
+            font-family: 'Courier New', monospace;
+            min-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-2 d-md-block bg-dark sidebar">
+                <div class="position-sticky">
+                    <div class="text-center py-4">
+                        <h4 class="text-white">PCMS</h4>
+                        <p class="text-muted small">Reports System</p>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="dashboard.html">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active text-white" href="reports-dashboard.html">
+                                <i class="fas fa-file-alt"></i> Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#" id="logoutLink">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-10 ms-sm-auto px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Reports Management</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button class="btn btn-primary" id="selectCaseBtn">
+                            <i class="fas fa-folder-open"></i> Select Case
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Case Selection Alert -->
+                <div id="noCaseAlert" class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Please select a case to view and generate reports.
+                </div>
+
+                <!-- Selected Case Info -->
+                <div id="selectedCaseInfo" style="display: none;">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Selected Case</h5>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <strong>Case Number:</strong><br>
+                                    <span id="caseNumber">-</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>OB Number:</strong><br>
+                                    <span id="obNumber">-</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Crime Type:</strong><br>
+                                    <span id="crimeType">-</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Status:</strong><br>
+                                    <span id="caseStatus" class="badge bg-info">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <h3 id="totalReportsCount">0</h3>
+                                <p>Total Reports</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <h3 id="draftReportsCount">0</h3>
+                                <p>Draft Reports</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <h3 id="approvedReportsCount">0</h3>
+                                <p>Approved Reports</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <h3 id="signedReportsCount">0</h3>
+                                <p>Signed Reports</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Tabs -->
+                    <ul class="nav nav-tabs mb-4" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#generateReportsTab">
+                                <i class="fas fa-plus-circle"></i> Generate Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#existingReportsTab">
+                                <i class="fas fa-list"></i> Existing Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#approvalsTab">
+                                <i class="fas fa-check-circle"></i> Pending Approvals
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Generate Reports Tab -->
+                        <div id="generateReportsTab" class="tab-pane fade show active">
+                            <!-- Investigation Phase Reports -->
+                            <div class="report-type-section">
+                                <h3 class="section-header">
+                                    <i class="fas fa-search"></i> Investigation Phase Reports
+                                </h3>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="report-card text-center">
+                                            <div class="report-icon">
+                                                <i class="fas fa-clipboard-list"></i>
+                                            </div>
+                                            <h5>Preliminary Investigation Report (PIR)</h5>
+                                            <p class="text-muted">Initial assessment within 24-48 hours</p>
+                                            <button class="btn btn-primary btn-generate-report" data-report-type="preliminary">
+                                                <i class="fas fa-plus"></i> Generate PIR
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="report-card text-center">
+                                            <div class="report-icon">
+                                                <i class="fas fa-tasks"></i>
+                                            </div>
+                                            <h5>Interim Progress Report</h5>
+                                            <p class="text-muted">Regular updates during investigation</p>
+                                            <button class="btn btn-primary btn-generate-report" data-report-type="interim">
+                                                <i class="fas fa-plus"></i> Generate Interim
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="report-card text-center">
+                                            <div class="report-icon">
+                                                <i class="fas fa-flag-checkered"></i>
+                                            </div>
+                                            <h5>Final Investigation Report (FIR)</h5>
+                                            <p class="text-muted">Complete investigation conclusion</p>
+                                            <button class="btn btn-success btn-generate-report" data-report-type="final">
+                                                <i class="fas fa-plus"></i> Generate FIR
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Court Phase Reports -->
+                            <div class="report-type-section">
+                                <h3 class="section-header">
+                                    <i class="fas fa-gavel"></i> Court Phase Reports
+                                </h3>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="report-card text-center">
+                                            <div class="report-icon">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <h5>Court Submission Docket</h5>
+                                            <p class="text-muted">Formal case submission to court</p>
+                                            <button class="btn btn-warning btn-generate-report" data-report-type="court_submission">
+                                                <i class="fas fa-plus"></i> Generate Docket
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="report-card text-center">
+                                            <div class="report-icon">
+                                                <i class="fas fa-box"></i>
+                                            </div>
+                                            <h5>Evidence Presentation Report</h5>
+                                            <p class="text-muted">Exhibit list with chain of custody</p>
+                                            <button class="btn btn-warning btn-generate-report" data-report-type="exhibit_list">
+                                                <i class="fas fa-plus"></i> Generate Exhibit List
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="report-card text-center">
+                                            <div class="report-icon">
+                                                <i class="fas fa-plus-square"></i>
+                                            </div>
+                                            <h5>Supplementary Report</h5>
+                                            <p class="text-muted">Additional findings after court order</p>
+                                            <button class="btn btn-warning btn-generate-report" data-report-type="supplementary">
+                                                <i class="fas fa-plus"></i> Generate Supplementary
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Closure Reports -->
+                            <div class="report-type-section">
+                                <h3 class="section-header">
+                                    <i class="fas fa-archive"></i> Case Closure
+                                </h3>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="report-card text-center">
+                                            <div class="report-icon">
+                                                <i class="fas fa-door-closed"></i>
+                                            </div>
+                                            <h5>Case Closure Report</h5>
+                                            <p class="text-muted">Final case closure documentation</p>
+                                            <button class="btn btn-secondary btn-generate-report" data-report-type="case_closure">
+                                                <i class="fas fa-plus"></i> Generate Closure Report
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Existing Reports Tab -->
+                        <div id="existingReportsTab" class="tab-pane fade">
+                            <div id="reportsListContainer">
+                                <!-- Reports will be loaded here dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Pending Approvals Tab -->
+                        <div id="approvalsTab" class="tab-pane fade">
+                            <div id="pendingApprovalsContainer">
+                                <!-- Pending approvals will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Report Editor Modal -->
+    <div class="modal fade" id="reportEditorModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-edit"></i> <span id="reportTypeTitle">Generate Report</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reportForm">
+                        <div class="mb-3">
+                            <label for="reportTitle" class="form-label">Report Title</label>
+                            <input type="text" class="form-control" id="reportTitle" required>
+                        </div>
+                        
+                        <!-- Dynamic metadata fields will be inserted here -->
+                        <div id="reportMetadataFields"></div>
+                        
+                        <div class="mb-3">
+                            <label for="reportContent" class="form-label">Report Content</label>
+                            <textarea class="form-control" id="reportContent" rows="20" required></textarea>
+                            <small class="text-muted">
+                                Edit the template content as needed. Use standard report format.
+                            </small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-info" id="previewReportBtn">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button type="button" class="btn btn-primary" id="saveReportBtn">
+                        <i class="fas fa-save"></i> Save Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Selection Modal -->
+    <div class="modal fade" id="caseSelectionModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Case</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="caseSearchInput" placeholder="Search by case number, OB number, or crime type...">
+                    </div>
+                    <div id="casesListContainer" style="max-height: 400px; overflow-y: auto;">
+                        <!-- Cases will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/reports-management.js"></script>
+    
+    <script>
+        // Base URL configuration
+        const BASE_URL = window.location.origin;
+        
+        // Initialize on page load
+        $(document).ready(function() {
+            // Check authentication
+            checkAuth();
+            
+            // Load user info
+            loadUserInfo();
+            
+            // Check if case is already selected
+            const selectedCaseId = sessionStorage.getItem('selectedCaseId');
+            if (selectedCaseId) {
+                loadCaseInfo(selectedCaseId);
+            }
+            
+            // Setup event listeners
+            $('#selectCaseBtn').click(() => showCaseSelectionModal());
+            $('#logoutLink').click(() => logout());
+        });
+        
+        /**
+         * Show case selection modal
+         */
+        function showCaseSelectionModal() {
+            // Load cases
+            $.ajax({
+                url: `${BASE_URL}/api/investigation/cases`,
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() },
+                success: (response) => {
+                    if (response.status === 'success') {
+                        displayCasesForSelection(response.data);
+                        $('#caseSelectionModal').modal('show');
+                    }
+                },
+                error: () => {
+                    showToast('Failed to load cases', 'error');
+                }
+            });
+        }
+        
+        /**
+         * Display cases in selection modal
+         */
+        function displayCasesForSelection(cases) {
+            const container = $('#casesListContainer');
+            
+            if (cases.length === 0) {
+                container.html('<div class="alert alert-info">No cases available</div>');
+                return;
+            }
+            
+            let html = '<div class="list-group">';
+            cases.forEach(c => {
+                html += `
+                    <a href="#" class="list-group-item list-group-item-action case-select-item" data-case-id="${c.id}">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">${c.case_number}</h6>
+                            <small><span class="badge bg-${getStatusColor(c.status)}">${c.status}</span></small>
+                        </div>
+                        <p class="mb-1"><strong>Crime:</strong> ${c.crime_type}</p>
+                        <small>OB: ${c.ob_number} | Date: ${new Date(c.incident_date).toLocaleDateString()}</small>
+                    </a>
+                `;
+            });
+            html += '</div>';
+            
+            container.html(html);
+            
+            // Add click handlers
+            $('.case-select-item').click(function(e) {
+                e.preventDefault();
+                const caseId = $(this).data('case-id');
+                selectCase(caseId);
+            });
+        }
+        
+        /**
+         * Select a case
+         */
+        function selectCase(caseId) {
+            sessionStorage.setItem('selectedCaseId', caseId);
+            $('#caseSelectionModal').modal('hide');
+            loadCaseInfo(caseId);
+        }
+        
+        /**
+         * Load case information
+         */
+        function loadCaseInfo(caseId) {
+            $.ajax({
+                url: `${BASE_URL}/api/investigation/cases/${caseId}`,
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() },
+                success: (response) => {
+                    if (response.status === 'success') {
+                        displayCaseInfo(response.data);
+                        // Initialize reports manager
+                        ReportsManager.init(caseId);
+                    }
+                },
+                error: () => {
+                    showToast('Failed to load case information', 'error');
+                }
+            });
+        }
+        
+        /**
+         * Display case information
+         */
+        function displayCaseInfo(caseData) {
+            $('#noCaseAlert').hide();
+            $('#selectedCaseInfo').show();
+            
+            $('#caseNumber').text(caseData.case_number);
+            $('#obNumber').text(caseData.ob_number);
+            $('#crimeType').text(caseData.crime_type);
+            $('#caseStatus').text(caseData.status).removeClass().addClass('badge').addClass(`bg-${getStatusColor(caseData.status)}`);
+        }
+        
+        /**
+         * Get status color
+         */
+        function getStatusColor(status) {
+            const colors = {
+                'draft': 'secondary',
+                'submitted': 'info',
+                'approved': 'primary',
+                'investigating': 'warning',
+                'closed': 'success',
+                'pending_court': 'danger'
+            };
+            return colors[status] || 'secondary';
+        }
+        
+        /**
+         * Load user info
+         */
+        function loadUserInfo() {
+            const fullName = localStorage.getItem('fullName') || 'User';
+            const role = localStorage.getItem('userRole') || 'user';
+        }
+        
+        /**
+         * Check authentication
+         */
+        function checkAuth() {
+            const token = getToken();
+            if (!token) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        /**
+         * Logout
+         */
+        function logout() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+        
+        /**
+         * Show toast notification
+         */
+        function showToast(message, type = 'info') {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: type,
+                title: message,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        }
+        
+        /**
+         * Get auth token
+         */
+        function getToken() {
+            return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        }
+    </script>
+</body>
+</html>

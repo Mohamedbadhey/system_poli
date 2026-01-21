@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XAASHIDA DHAKHTARKA EE DHAAWA-MUUJINTA</title>
+    <link rel="stylesheet" href="../css/medical-report-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="../js/medical-examination-form.js"></script>
+    <style>
+        .print-button-container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .print-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 0 10px;
+        }
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .print-btn i {
+            margin-right: 8px;
+        }
+        .save-status {
+            display: inline-block;
+            margin-left: 20px;
+            color: #10b981;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .signature-canvas {
+            border: 2px solid #000;
+            border-radius: 4px;
+            cursor: crosshair;
+            background: white;
+            width: 100%;
+            height: 120px;
+            display: block;
+            margin: 10px 0;
+        }
+        .signature-controls {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .clear-sig-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .clear-sig-btn:hover {
+            background: #dc2626;
+        }
+        @media print {
+            .print-button-container {
+                display: none;
+            }
+            .signature-canvas {
+                display: none;
+            }
+            .signature-controls {
+                display: none;
+            }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-button-container">
+        <button class="print-btn" onclick="printFormWithSignatures()">
+            <i class="fas fa-print"></i> Print Form
+        </button>
+        <button class="print-btn" onclick="printFormWithSignatures()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <i class="fas fa-file-pdf"></i> Save as PDF
+        </button>
+        <button class="print-btn" onclick="saveDraft()" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+            <i class="fas fa-save"></i> Save Draft
+        </button>
+        <button class="print-btn" onclick="loadDraft()" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+            <i class="fas fa-folder-open"></i> Load Draft
+        </button>
+        <button class="print-btn" onclick="clearDraft()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+            <i class="fas fa-trash"></i> Clear Draft
+        </button>
+        <button class="print-btn" id="loadCaseBtn" onclick="getCaseDataFromParent()" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
+            <i class="fas fa-folder"></i> Load Case Info
+        </button>
+        <span id="saveStatus" class="save-status">Auto-saved</span>
+    </div>
+    <div class="report-container">
+        <!-- PAGE 1 -->
+        <div class="page">
+            <div class="header">
+                <h1>CIIDANKA BOOLISKA JUBALAND</h1>
+                <h2>XAASHIDA DHAKHTARKA EE DHAAWA-MUUJINTA</h2>
+                <div class="header-info">
+                    <div class="info-row">
+                        <span>Taariikh: <input type="date" name="report_date" id="reportDate" style="border:none; border-bottom:1px solid #000; font-size:14px; width:150px;"></span>
+                        <span>X,C,S,/440</span>
+                    </div>
+                    <div class="info-row">
+                        <span>NO: <input type="text" name="case_number" id="caseNumber" style="border:none; border-bottom:1px solid #000; font-size:14px; width:150px;" placeholder="BOL/61"></span>
+                        <span>BOL/61</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    QAYBTA 1AAD (WAA IN UU BOOLISKU BUUXIYO IYADA OO LABO NUQUL KA KOOBAN)
+                </div>
+
+                <div class="form-group">
+                    <label>Ku: Isbitaalka</label>
+                    <input type="text" class="form-control" name="hospital_name" id="hospitalName">
+                </div>
+
+                <div class="form-group">
+                    <label>Magaca Dhibanaha</label>
+                    <input type="text" class="form-control" name="victim_name" id="victimName">
+                </div>
+
+                <div class="form-group">
+                    <label>Magaca Eedeysanaha</label>
+                    <input type="text" class="form-control" name="accused_name" id="accusedName">
+                </div>
+
+                <div class="form-group">
+                    <label>Daʼda</label>
+                    <input type="text" class="form-control" name="age" id="age">
+                </div>
+
+                <div class="form-group">
+                    <label>Xaafadda, Degmada / Magaalada</label>
+                    <input type="text" class="form-control" name="location" id="location">
+                </div>
+
+                <div class="form-group">
+                    <label>Taariikhda lyo Wakhtiga Danbigu Dhacay</label>
+                    <input type="text" class="form-control" name="incident_datetime" id="incidentDateTime">
+                </div>
+
+                <div class="form-group">
+                    <label>Taariikhda lyo Wakhtiga Warbixinta Booliska</label>
+                    <input type="text" class="form-control" name="police_report_datetime" id="policeReportDateTime">
+                </div>
+
+                <div class="form-group">
+                    <label>Faahfaahin Kooban Oo Ku Saabsan Danbiga Dhacay</label>
+                    <textarea class="form-control" rows="4" name="crime_description" id="crimeDescription"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Caddee Haddii Uu Afduub Jiro</label>
+                    <input type="text" class="form-control" name="kidnapping_status" id="kidnappingStatus">
+                </div>
+
+                <div class="form-group">
+                    <label>Maalinta lyo Taariikhda Loo Gudbiyay Isbitaalka</label>
+                    <input type="text" class="form-control" name="hospital_submission_date" id="hospitalSubmissionDate">
+                </div>
+
+                <div class="form-group">
+                    <label>Qaybta Booliska [Saldhigga]</label>
+                    <input type="text" class="form-control" name="police_station" id="policeStation">
+                </div>
+
+                <div class="form-group">
+                    <label>Lambarka OOBBIGA Booliska</label>
+                    <input type="text" class="form-control" name="ob_number" id="obNumber">
+                </div>
+
+                <div class="form-group">
+                    <label>Magaca Sarkaalka Booliska Ee Codsiga Sameynaya</label>
+                    <input type="text" class="form-control" name="officer_name" id="officerName">
+                </div>
+
+                <div class="form-group">
+                    <label>Lambarkiisa Ama Darajadiisa</label>
+                    <input type="text" class="form-control" name="officer_rank" id="officerRank">
+                </div>
+
+                <div class="form-group">
+                    <label>Jagada Uu Hayo</label>
+                    <input type="text" class="form-control" name="officer_position" id="officerPosition">
+                </div>
+
+                <div class="form-group">
+                    <label>Lambarka Telefoonka</label>
+                    <input type="text" class="form-control" name="officer_phone" id="officerPhone">
+                </div>
+
+                <div class="form-group signature">
+                    <label>Saxiixa (Officer Signature)</label>
+                    <canvas id="officerSignatureCanvas" class="signature-canvas"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="clear-sig-btn" onclick="clearOfficerSignature()">
+                            <i class="fas fa-eraser"></i> Clear Signature
+                        </button>
+                    </div>
+                    <div class="signature-line"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">QAYBTA II. FAAHFAAHINTA CAAFIMAADKA</div>
+                <div class="section-subtitle">(WAA INUU ISBITAALKU BUUXIYO LABO NUQUL)</div>
+
+                <div class="header-info">
+                    <div class="info-row">
+                        <span>TAARIIKH: ________________</span>
+                    </div>
+                    <div class="info-row">
+                        <span>TIXRAAC: ________________</span>
+                    </div>
+                </div>
+
+                <div class="section-title">QAYBTA A.</div>
+                <div class="section-subtitle">QAYBTAN WAA IN LAGU BUUXIYO DHAMAAN BAARITAANADA</div>
+
+                <div class="form-group">
+                    <label>Magaca Bukaanka</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Lr. Galka ee isbitaalka</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Taariikhda Baaritaanka</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Wakhtiga Baaritaanka</label>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div class="page page-break">
+            <div class="section">
+                <div class="section-title">QAYBTA FAAHFAAHINTA TACADDIGA JINSIGA</div>
+                <div class="section-subtitle">QAYBTAAN WAA IN LAGU BUUXIYO DHAMAAN DACWADAHA TACADDIGA JINSIGA KADDIB MARKA LA BUUXIYO QAYBTA III</div>
+
+                <div class="form-group">
+                    <label>1. Nooca tacaddiga jinsi ee la gaystay</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Tan iyo markii loo geystay tacaddiga jinsi bukaanka miyuu: (biyo isku rusheeyay, qubaystay ama kaadiyay)</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Bukaanka ma xasuustaa nooca falka galmo, hadii uu jiro ee dhacay xilliga weerarka? sheeg haddiii uu yahay afka, xubinta taranka, futada ama meel kale</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>4. Faahfaahin shaqsi-ahaaneed</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>5. Taariikhda cudurrada haweenka: ilmo dhalis</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>b) hadda uur miyay leedahay?</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> Haa</label>
+                        <label><input type="checkbox"> Maya</label>
+                    </div>
+                    <label>hadii ay Haa tahay, shinka uurka: ________________</label>
+                </div>
+
+                <div class="form-group">
+                    <label>t) waqtigii ugu dambeysay caadada: _____ / _____ / _____</label>
+                </div>
+
+                <div class="form-group">
+                    <label>j) imisaa caruura ayaa dhashay</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>6. muuqaalka guud ee bukaanka</label>
+                    <div class="inline-fields">
+                        <div class="inline-field">
+                            <label>b) dhererka:</label>
+                            <input type="text" class="form-control-inline">
+                        </div>
+                        <div class="inline-field">
+                            <label>cufnaanka:</label>
+                            <input type="text" class="form-control-inline">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>j) Dhismaha Jirka:</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>7. caddayn ah inuu bukaanku daroogaysan/cabsan yahay</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> Haa</label>
+                        <label><input type="checkbox"> Maya</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>8. la Socotka Calaamadaha Muhiimka ah</label>
+                    <div class="vital-signs">
+                        <div class="vital-sign-item">
+                            <label>b) Heerkulka:</label>
+                            <input type="text" class="form-control-inline">
+                        </div>
+                        <div class="vital-sign-item">
+                            <label>t) wadna-garaac:</label>
+                            <input type="text" class="form-control-inline">
+                        </div>
+                        <div class="vital-sign-item">
+                            <label>j) cadaadiska dhiiga:</label>
+                            <input type="text" class="form-control-inline">
+                        </div>
+                        <div class="vital-sign-item">
+                            <label>x) Heerka neefsashada:</label>
+                            <input type="text" class="form-control-inline">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>9. Indhaha ka eeg in uu dhiig fadhiistay (ceejin)</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> Haa</label>
+                        <label><input type="checkbox"> Maya</label>
+                    </div>
+                    <label>Haa qeex:</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>10. Afka lyo Far Faruuryaha (diir-kac/murxid/dilaac) (ka qaad candhuuf)</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> Haa</label>
+                        <label><input type="checkbox"> Maya</label>
+                    </div>
+                    <label>Haa qeex:</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 3 -->
+        <div class="page page-break">
+            <div class="section">
+                <div class="form-group checkbox-group">
+                    <label>11. maqaarka madaxa (jeexdin-xulan iwm):</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> Haa</label>
+                        <label><input type="checkbox"> Maya</label>
+                    </div>
+                    <label>Haa Qeex:</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>12. Qoorta [murxid/jeexdin-xulan iwm):</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> Haa</label>
+                        <label><input type="checkbox"> Maya</label>
+                    </div>
+                    <label>Dhaawacyo kale haddii ay jiraaan</label>
+                    <label>Qeex:</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Faahfaahin ka bixi baaritaanka xubbinta Tarank aiyo dabada</strong></label>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>c) Dheecaan (swap) maka qaaday</label>
+                    <div class="inline-fields">
+                        <div class="checkbox-options">
+                            <label>marinka ilmaha</label>
+                            <label><input type="checkbox"> Haa</label>
+                            <label><input type="checkbox"> Maya</label>
+                        </div>
+                        <div class="checkbox-options">
+                            <label>Dabada</label>
+                            <label><input type="checkbox"> Haa</label>
+                            <label><input type="checkbox"> Maya</label>
+                        </div>
+                    </div>
+                    <label>Haa qeex:</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>t) Maku Aragtay Marinka Ilmaha/dabada</label>
+                    <div class="checkbox-list">
+                        <label><input type="checkbox"> Murux</label>
+                        <label><input type="checkbox"> Dilaac</label>
+                        <label><input type="checkbox"> Dhiig gaduudan</label>
+                        <label><input type="checkbox"> Dhiig hoorsi</label>
+                    </div>
+                    <label>Haa qeex:</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>j) Baaritaan dabada ma samaysay</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> Haa</label>
+                        <label><input type="checkbox"> Maya</label>
+                    </div>
+                    <label>Haa qeex:</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>masawir ma laga qaaday dhaawacyada?</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> Haa</label>
+                        <label><input type="checkbox"> Maya</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><strong>v. Diiwaanka naamuunadaha fooransiga ee la qaaday</strong></label>
+                    <table class="evidence-table">
+                        <thead>
+                            <tr>
+                                <th>Naamuunadaha</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dhiig (DNA)</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                            <tr>
+                                <td>Xagashada ciddiyaha</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                            <tr>
+                                <td>Shanlo</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                            <tr>
+                                <td>Ilaali Timaha Shuunka</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                            <tr>
+                                <td>ilaali timaha madaxa</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                            <tr>
+                                <td>Dheecaan Shisheeye</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                            <tr>
+                                <td>Timo Shisheeye</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                            <tr>
+                                <td>warqadda qabashada</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                            <tr>
+                                <td>Shayga Dhuqa Dhiiga</td>
+                                <td><input type="text" class="form-control-table"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 4 -->
+        <div class="page page-break">
+            <div class="section">
+                <div class="section-title">Baaritaanka Waxaa Sameeyay</div>
+                
+                <div class="form-group">
+                    <label>1. Dakhtar</label>
+                    <div class="checkbox-options">
+                        <label><input type="checkbox"> b. Dakhtar sare</label>
+                        <label><input type="checkbox"> t. Dakhtar Qibrad Shan Sano Leh ugu Yaraan</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Magaca</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Lambarka Telefoonka</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group signature">
+                    <label>Saxiix (Doctor Signature)</label>
+                    <canvas id="doctorSignatureCanvas" class="signature-canvas"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="clear-sig-btn" onclick="clearDoctorSignature()">
+                            <i class="fas fa-eraser"></i> Clear Signature
+                        </button>
+                    </div>
+                    <div class="signature-line"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">QAYBTA III. FAAHFAAHINTA CAAFIMAADKA</div>
+                <div class="section-subtitle">WAA LAGA BUUXINAYAA NOOC KASTA OO DHAAWAC AH</div>
+                <div class="section-subtitle">WAA IN UU CUSBITAALKU BUUXIYO IYADA OO LABA NUQUL KA KOOBAN KADIB MARKA LA BUUXIYO QAYBTA I IYO QAYBTA II</div>
+
+                <div class="form-group">
+                    <label>a) faahfaahinta goobta, xaaladda, nooca iyo qotada dhaawaca</label>
+                    <div class="injury-location">
+                        <label>Goobta dhacdada:</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                        <label><input type="checkbox"> b. Dhaawaca Madaxa lyo Qoorta</label>
+                        <label><input type="checkbox"> t. Xabadka lyo Caloosha</label>
+                        <label><input type="checkbox"> j. Laxaadka Kore</label>
+                        <label><input type="checkbox"> x. Laxaadka Hoose</label>
+                        <label><input type="checkbox"> Kh. Dhaawac Kale</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>b) Qiyaasta Inta uu dhaawacu jiro (saacado, maalmo, usbuucyo):</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>c) Nooca Qalabka laga yaabo inuu dhaawaca keenay</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>d) Wax dawayn ah oo la helay ka hor inta aan baaritaanka la samayn</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>e) maxuu yahay natiijada baaritaan caafimaad ee ka soo baxay iyo darajada ama nooca dhaawaca?</label>
+                    <label>Tusaale: dhaawac fudud *, dhaawac culus ** ama dhaawac aad u culus ***</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="definitions">
+                    <h4>*dhaawac fudud:</h4>
+                    <p>dhaawac fudud baa loo qaadanayaa hadii nabarku uu keeno bukaan ku saabsan xagga jirka</p>
+
+                    <h4>**dhaawac culus:</h4>
+                    <p>dhaawac culus baa loo qaadanayaa</p>
+                    <ul>
+                        <li>[b] haddii uu nabarku keenayo bukaan halis gelinayo nafta qofka wax la yeelay ama awoodii qofka u keenay in uu qabsan waayo hawsha caadiga ah muddo ka kooban 40 maalmood</li>
+                        <li>[t] haddii uu nabarku itaal darro joogto ah u keenayo dareen (senso) ama xubin []</li>
+                        <li>[i] haddii la rido ilig caafiaad qaba</li>
+                    </ul>
+
+                    <h4>***dhaawac aad u culus:</h4>
+                    <p>dhaawac aad u culus baa loo qaadanayaa haddii nabarku uu keenayo:</p>
+                    <ul>
+                        <li>[b] bukaan la hubo ama laga yaabo inaan la daaweyn Karin</li>
+                        <li>[t] dareen luma (la perdita di un senso)</li>
+                        <li>[j] addin go'a ama naafooba ee noqda mid aan waxba Karin ama xubin wax tar gabta awoodda dhalidda oo lunta ama hadalka oo qofka aad dhib ugu noqda.</li>
+                        <li>[x] foolxumo ama calaamo joogta ah oo wajiga ku harta</li>
+                        <li>[kh] qofka wax la yeelay oo dhicisa</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

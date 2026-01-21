@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-Criminal Certificate - Jubaland Police</title>
+    <link rel="stylesheet" href="../css/non-criminal-certificate-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <style>
+        /* Print Styles */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        @media print {
+            /* Hide elements not needed for print */
+            .control-bar,
+            .ctrl-btn,
+            .save-status,
+            button,
+            .no-print {
+                display: none !important;
+            }
+            
+            /* Reset body and html */
+            html, body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 0;
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            /* Certificate container */
+            .certificate {
+                width: 100%;
+                max-width: 210mm;
+                min-height: 297mm;
+                margin: 0 auto;
+                padding: 15mm;
+                box-sizing: border-box;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+                background: white !important;
+            }
+            
+            /* Scale down if needed */
+            .certificate * {
+                max-width: 100%;
+                page-break-inside: avoid;
+            }
+            
+            /* Ensure header image fits */
+            .header-image img {
+                max-width: 180mm;
+                height: auto;
+            }
+            
+            /* Photo sizing */
+            .photo-preview img {
+                max-width: 40mm;
+                height: auto;
+            }
+            
+            /* Signature pads */
+            canvas {
+                border: 1px solid #000 !important;
+                max-width: 60mm;
+                height: auto;
+            }
+            
+            /* QR Code */
+            #qrcode {
+                max-width: 30mm;
+            }
+            
+            /* Text sizing for print */
+            body {
+                font-size: 10pt;
+            }
+            
+            h1 {
+                font-size: 16pt;
+            }
+            
+            h2 {
+                font-size: 14pt;
+            }
+            
+            /* Remove shadows and backgrounds for print */
+            * {
+                box-shadow: none !important;
+                background: white !important;
+            }
+            
+            /* Ensure text is black */
+            .certificate * {
+                color: black !important;
+            }
+            
+            /* Keep borders for structure */
+            input:disabled,
+            textarea:disabled,
+            select:disabled {
+                border: 1px solid #999 !important;
+                background: white !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Control Buttons -->
+    <div class="control-bar">
+        <button class="ctrl-btn" onclick="startNewCertificate()" style="background: #10b981;">
+            <i class="fas fa-plus-circle"></i> New Certificate
+        </button>
+        <button class="ctrl-btn" onclick="showPersonSelection()" style="background: #06b6d4;">
+            <i class="fas fa-user-plus"></i> Select Person
+        </button>
+        <button class="ctrl-btn" onclick="saveCertificate()" style="background: #f59e0b;">
+            <i class="fas fa-save"></i> Save
+        </button>
+        <button class="ctrl-btn" onclick="showMyCertificates()" style="background: #8b5cf6;">
+            <i class="fas fa-folder-open"></i> My Certificates
+        </button>
+        <button class="ctrl-btn" onclick="printCertificate()">
+            <i class="fas fa-print"></i> Print
+        </button>
+        <span id="saveStatus" class="save-status">Auto-saving...</span>
+    </div>
+
+    <!-- Certificate Container -->
+    <div class="certificate-container">
+        <div class="certificate-page">
+            <!-- Header with Logo -->
+            <div class="certificate-header-new">
+                <div class="header-left-section">
+                    <div class="header-line">TALISKA QEYBTA BOOLISKA</div>
+                    <div class="header-line">GOBOLKA JUBADA HOOSE EE</div>
+                    <div class="header-line">DOWLAD GOBALEEDKA</div>
+                    <div class="header-line">JUBALAND EE SOMAALIYA</div>
+                </div>
+                <div class="header-center-logo">
+                    <img src="../images/logo.png" alt="Police Logo" style="max-width: 150px; height: auto;">
+                </div>
+                <div class="header-right-section">
+                    <div class="header-line">THE POLICE HEAD QUARTER</div>
+                    <div class="header-line">FOR THE LOWER JUBA OF</div>
+                    <div class="header-line">JUBALAND STATE OF</div>
+                    <div class="header-line">SOMALIA</div>
+                </div>
+            </div>
+
+            <!-- Organization Name -->
+            <div class="org-name-section">
+                <div class="org-name-bold">HOGAANKA BAARISTA DAMBIYADA CID</div>
+                <div class="org-name-english">Criminal Investigation Directorate of Jubaland Police</div>
+            </div>
+
+            <div class="blue-line"></div>
+
+            <!-- Reference and Date -->
+            <div class="ref-date-row">
+                <div class="ref-number">
+                    <span style="font-weight: bold;">REF:</span> 
+                    <input type="text" id="refNumber" name="ref_number" value="JPFHQ/CID/NC:" style="width: 250px;">
+                </div>
+                <div class="date-field">
+                    <span style="font-weight: bold;">Date:</span> 
+                    <input type="date" id="issueDate" name="issue_date" style="width: 150px;">
+                </div>
+            </div>
+
+            <!-- Title -->
+            <div class="certificate-title">
+                <div class="title-somali">WARQADA DAMBI LA'AANTA</div>
+                <div class="title-english">NON-CRIMINAL CERTIFICATE</div>
+            </div>
+
+            <!-- To Whom It May Concern -->
+            <div class="to-whom">
+                TO WHOM IT MAY CONCERN:
+            </div>
+
+            <!-- Person Info Section with Photo -->
+            <div class="person-info-section">
+                <div class="person-details">
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <input type="text" id="personName" name="person_name" placeholder="Enter Full Name" autocomplete="off" style="border: none; border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; width: 300px; text-transform: uppercase;">
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-somali">Magaca/name:</span>
+                    </div>
+                    
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <input type="text" id="motherName" name="mother_name" placeholder="Enter Mother's Full Name" autocomplete="off" style="border: none; border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; width: 300px;">
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-bilingual">Magaca hooyada/ mothers name:</span>
+                    </div>
+                    
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <select id="gender" name="gender" style="border: none; border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; width: 150px;">
+                            <option value="MALE">MALE</option>
+                            <option value="FEMALE">FEMALE</option>
+                        </select>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-bilingual">Jinsi/ gender:</span>
+                    </div>
+                    
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <input type="date" id="birthDateNew" name="birth_date_new" style="border: none; border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; width: 200px;">
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-bilingual">Taariikhda dhalasha / date of birth:</span>
+                    </div>
+                    
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <input type="text" id="birthPlaceNew" name="birth_place_new" value="KISMAIO, SOMALIA" style="border: none; border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; width: 300px;">
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-bilingual">Goobta dhalashada/ place of birth:</span>
+                    </div>
+                </div>
+                
+                <div class="person-photo">
+                    <div id="photoPreview" style="width: 150px; height: 180px; border: 2px solid #000; background: #f0f0f0; display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer;" onclick="document.getElementById('photoInput').click()">
+                        <i class="fas fa-camera" style="font-size: 30px; color: #999; margin-bottom: 10px;"></i>
+                        <span style="font-size: 12px; color: #666;">Click to upload photo</span>
+                    </div>
+                    <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                    <div style="text-align: center; margin-top: 5px; font-size: 10px; color: #0066cc;">
+                        <span id="refPhotoText">Ref:JPHQ/CID/NC/2002</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="certificate-content">
+                <p class="paragraph">
+                    This is to certify that 
+                    <input type="text" class="inline-input name-input" id="personName" name="person_name" placeholder="Full Name"> 
+                    born on 
+                    <input type="text" class="inline-input date-input" id="birthDateText" name="birth_date_text" placeholder="25th November, 1998"> 
+                    in 
+                    <input type="text" class="inline-input location-input" id="birthPlace" name="birth_place" placeholder="Kismaio" value="Kismaio">, 
+                    Somalia has no criminal record registered in the records of the Criminal Investigation directorate of Jubaland Police.
+                </p>
+
+                <p class="paragraph">
+                    <span class="person-name-ref"></span> has undergone a comprehensive background check and has been found to have no criminal history within the jurisdiction of Jubaland State.
+                </p>
+
+                <p class="paragraph">
+                    This certificate is issued upon the request of 
+                    <span class="person-name-ref"></span> 
+                    for international purposes, such as 
+                    <input type="text" class="inline-input purpose-input" id="purpose" name="purpose" placeholder="visa application, education, or other official needs" style="width: 400px;"> 
+                    is valid for a period of 
+                    <input type="text" class="inline-input validity-input" id="validityPeriod" name="validity_period" value="6 months" style="width: 100px;"> 
+                    from the date of issue.
+                </p>
+            </div>
+
+            <!-- Signature Section -->
+            <div class="signature-section">
+                <div class="signature-block">
+                    <div class="signature-title">Director of Criminal Investigation Directorate</div>
+                    <div class="director-name">
+                        <span style="font-weight: bold;">Cap:</span> 
+                        <input type="text" id="directorName" name="director_name" value="Omar Hujale Abdi" style="width: 250px; border: none; background: transparent; padding: 2px; font-size: 14px;">
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <span style="font-weight: bold;">Signature:</span>
+                        <canvas id="directorSignatureCanvas" class="signature-canvas"></canvas>
+                        <button type="button" class="clear-sig-btn" onclick="clearDirectorSignature()">
+                            <i class="fas fa-eraser"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- QR Code -->
+                <div class="qr-code-section">
+                    <div id="qrCodeContainer" class="qr-code-box">
+                        <span style="font-size: 10px; color: #999;">QR Code</span>
+                    </div>
+                    <div class="qr-label">Scan to Verify</div>
+                </div>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="footer-note">
+                <p style="font-size: 11px; text-align: center; margin: 0;">
+                    <strong style="color: #10b981;">Contact us</strong>
+                </p>
+                <p style="font-size: 10px; text-align: center; margin: 5px 0 0 0;">
+                    <strong style="color: #10b981;">Address:</strong> <span style="color: #333;">Marine, taliska booliska jubada hoose</span>
+                    <strong style="color: #10b981; margin-left: 15px;">Mobile:</strong> <span style="color: #333;">+252616755541</span>
+                    <strong style="color: #10b981; margin-left: 15px;">Email:</strong> <span style="color: #0066cc;">info@cidpolice.jls.so</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Person Selection Modal -->
+    <div id="personSelectionModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; overflow-y: auto;">
+        <div style="max-width: 900px; margin: 50px auto; background: white; border-radius: 10px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0;"><i class="fas fa-users"></i> Select Person for Certificate</h2>
+                <button onclick="closePersonSelection()" style="background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+            <input type="text" id="personSearchInput" placeholder="Search by name..." style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; margin-bottom: 15px;" onkeyup="filterPersons()">
+            <div id="personListContainer" style="max-height: 500px; overflow-y: auto;">
+                <div style="padding: 20px; text-align: center;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Certificates Modal -->
+    <div id="myCertificatesModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; overflow-y: auto;">
+        <div style="max-width: 1000px; margin: 50px auto; background: white; border-radius: 10px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0;"><i class="fas fa-folder-open"></i> My Saved Certificates</h2>
+                <button onclick="closeMyCertificates()" style="background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+            <div id="certificatesListContainer" style="max-height: 600px; overflow-y: auto;">
+                <div style="padding: 20px; text-align: center;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/non-criminal-certificate.js"></script>
+</body>
+</html>

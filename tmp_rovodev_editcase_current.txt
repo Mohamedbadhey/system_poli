@@ -1,0 +1,160 @@
+﻿async function editCase(caseId) {
+    try {
+        const response = await obAPI.getCase(caseId);
+        if (response.status === 'success') {
+            const caseData = response.data;
+            
+            const bodyHtml = `
+                <form id="editCaseForm" style="max-height: 70vh; overflow-y: auto;">
+                    <h3>Case Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Crime Type *</label>
+                            <input type="text" name="crime_type" value="${caseData.crime_type}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Crime Category *</label>
+                            <select name="crime_category" required>
+                                <option value="violent" ${caseData.crime_category === 'violent' ? 'selected' : ''}>Violent Crime</option>
+                                <option value="property" ${caseData.crime_category === 'property' ? 'selected' : ''}>Property Crime</option>
+                                <option value="drug" ${caseData.crime_category === 'drug' ? 'selected' : ''}>Drug Related</option>
+                                <option value="cybercrime" ${caseData.crime_category === 'cybercrime' ? 'selected' : ''}>Cybercrime</option>
+                                <option value="sexual" ${caseData.crime_category === 'sexual' ? 'selected' : ''}>Sexual Offense</option>
+                                <option value="juvenile" ${caseData.crime_category === 'juvenile' ? 'selected' : ''}>Juvenile</option>
+                                <option value="other" ${caseData.crime_category === 'other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Priority *</label>
+                            <select name="priority" required>
+                                <option value="low" ${caseData.priority === 'low' ? 'selected' : ''}>Low</option>
+                                <option value="medium" ${caseData.priority === 'medium' ? 'selected' : ''}>Medium</option>
+                                <option value="high" ${caseData.priority === 'high' ? 'selected' : ''}>High</option>
+                                <option value="critical" ${caseData.priority === 'critical' ? 'selected' : ''}>Critical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Incident Date & Time *</label>
+                            <input type="datetime-local" name="incident_date" value="${caseData.incident_date ? caseData.incident_date.substring(0, 16) : ''}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Incident Location *</label>
+                        <input type="text" name="incident_location" value="${caseData.incident_location}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Incident Description *</label>
+                        <textarea name="incident_description" rows="5" required>${caseData.incident_description}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="is_sensitive" ${caseData.is_sensitive ? 'checked' : ''}> Mark as Sensitive Case
+                        </label>
+                    </div>
+                    
+                    <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e7eb;">
+                    
+                    <h3>Case Parties</h3>
+                    ${caseData.parties && caseData.parties.length > 0 ? `
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            ${caseData.parties.map((party, index) => `
+                                <div style="padding: 15px; border: 2px solid ${party.party_role === 'accuser' ? '#3b82f6' : '#ef4444'}; border-radius: 8px; margin-bottom: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                        <strong style="color: ${party.party_role === 'accuser' ? '#3b82f6' : '#ef4444'};">${party.party_role.toUpperCase()}</strong>
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="removePartyFromCase(${party.id}, ${caseId})">
+                                            <i class="fas fa-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                    <p><strong>Name:</strong> ${party.first_name} ${party.last_name}</p>
+                                    <p><strong>ID:</strong> ${party.national_id || 'N/A'} | <strong>Phone:</strong> ${party.phone || 'N/A'}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button type="button" class="btn btn-sm btn-primary" style="margin-top: 10px;" onclick="addMoreParties(${caseId})">
+                            <i class="fas fa-plus"></i> Add More Parties
+                        </button>
+                    ` : '<p class="alert alert-info">No parties added yet.</p>'}
+                </form>
+            `;
+            
+            showModal('Edit Case', bodyHtml, [
+                { text: 'Cancel', class: 'btn btn-secondary', onclick: 'closeModal()' },
+                { text: 'Save Changes', class: 'btn btn-primary', onclick: `submitEditCase(${caseId})` }
+            ], 'large');
+        }
+    } catch (error) {
+        await showError('Error', 'Failed to load case details: ' + error.message);
+    }
+}
+
+async function removePartyFromCase(partyId, caseId) {
+    const result = await showConfirm('Remove Party?', 'Are you sure you want to remove this party from the case?', 'Yes, remove');
+    if (result.isConfirmed) {
+        try {
+            // Call API to remove party
+            // For now, just reload the edit form
+            await showSuccess('Success', 'Party removed successfully');
+            closeModal();
+            editCase(caseId);
+        } catch (error) {
+            await showError('Error', 'Failed to remove party: ' + error.message);
+        }
+    }
+}
+
+function addMoreParties(caseId) {
+    closeModal();
+    showAddPartiesModal(caseId);
+}
+
+async function submitEditCase(caseId) {
+    const form = $('#editCaseForm')[0];
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    data.is_sensitive = data.is_sensitive ? 1 : 0;
+    
+    try {
+        showLoading('Updating Case', 'Please wait...');
+        const response = await obAPI.updateCase(caseId, data);
+        
+        closeAlert();
+        if (response.status === 'success') {
+            await showSuccess('Success!', 'Case updated successfully!');
+            closeModal();
+            loadMyCasesTable();
+        }
+    } catch (error) {
+        closeAlert();
+        console.error('Case update error:', error);
+        
+        // Handle validation errors
+        if (error.status === 400 && error.response && error.response.messages) {
+            const messages = error.response.messages;
+            let errorText = '';
+            
+            // Format validation errors
+            if (typeof messages === 'object') {
+                errorText = Object.values(messages).join('\n');
+            } else {
+                errorText = messages;
+            }
+            
+            await Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                html: errorText.replace(/\n/g, '<br>'),
+                confirmButtonColor: '#ef4444'
+            });
+        } else {
+            await showError('Error', 'Failed to update case: ' + error.message);
+        }
+    }
+}
+
+// OLD editCase function that was incomplete:

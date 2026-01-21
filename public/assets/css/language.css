@@ -1,0 +1,106 @@
+/* ============================================
+   Language Switcher Styles
+   ============================================ */
+
+.language-dropdown {
+    position: relative;
+    margin-right: 15px;
+}
+
+.language-dropdown .icon-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.language-dropdown .icon-btn:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.language-dropdown .flag {
+    font-size: 18px;
+}
+
+.language-dropdown .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 180px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.language-dropdown .dropdown-header {
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.language-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #374151;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.language-dropdown .dropdown-item:hover {
+    background: #f3f4f6;
+    color: #2563eb;
+}
+
+.language-dropdown .dropdown-item .flag {
+    font-size: 20px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.language-dropdown .dropdown-menu[style*="block"] {
+    animation: fadeIn 0.2s ease;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .language-dropdown .icon-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .language-dropdown .flag {
+        font-size: 16px;
+    }
+}

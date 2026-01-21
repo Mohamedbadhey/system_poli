@@ -1,0 +1,20 @@
+ERROR - 2026-01-17 09:31:08 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-17 09:31:08 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Tests\Unit\tmp_rovodev_AdminCaseVisibilityTest" file="C:\Users\hp\Documents\kismayo police\systempolic\tests\unit\tmp_rovodev_AdminCaseVisibilityTest.php" tests="1" assertions="0" errors="1" failures="0" skipped="0" time="0.000000">
+    <testcase name="testAdminSeesOwnCasesAndOBOfficerCases" file="C:\Users\hp\Documents\kismayo police\systempolic\tests\unit\tmp_rovodev_AdminCaseVisibilityTest.php" line="18" class="Tests\Unit\tmp_rovodev_AdminCaseVisibilityTest" classname="Tests.Unit.tmp_rovodev_AdminCaseVisibilityTest" assertions="0" time="0.000000">
+      <error type="CodeIgniter\Database\Exceptions\DatabaseException">Tests\Unit\tmp_rovodev_AdminCaseVisibilityTest::testAdminSeesOwnCasesAndOBOfficerCases&#13;
+CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.&#13;
+Main connection [MySQLi]: Unknown database 'pcms_test'
+&#13;
+C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php:465
+C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Test\DatabaseTestTrait.php:91
+C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Test\DatabaseTestTrait.php:67
+C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Test\CIUnitTestCase.php:254
+C:\Users\hp\Documents\kismayo police\systempolic\tests\unit\tmp_rovodev_AdminCaseVisibilityTest.php:14</error>
+    </testcase>
+  </testsuite>
+</testsuites>

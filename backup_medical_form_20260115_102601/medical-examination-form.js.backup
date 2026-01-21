@@ -1,0 +1,410 @@
+// Medical Examination Form - Enhanced with Auto-fill, Save/Load, and Digital Signature
+// =====================================================================================
+
+let currentCaseData = null;
+let signaturePad = null;
+let doctorSignaturePad = null;
+
+// ============================================
+// Initialize Form
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    initializeForm();
+    setupEventListeners();
+    setupSignaturePads();
+    loadDraftIfExists();
+    getCaseDataFromParent();
+});
+
+// ============================================
+// Get Case Data from Parent Window
+// ============================================
+function getCaseDataFromParent() {
+    try {
+        // Check if we're in an iframe and can access parent
+        if (window.parent && window.parent !== window) {
+            // Listen for case data from parent
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'CASE_DATA') {
+                    currentCaseData = event.data.caseData;
+                    autoFillCaseData(currentCaseData);
+                }
+            });
+            
+            // Request case data from parent
+            window.parent.postMessage({ type: 'REQUEST_CASE_DATA' }, '*');
+        }
+    } catch (e) {
+        console.log('Cannot access parent window - form will work standalone');
+    }
+}
+
+// ============================================
+// Auto-fill Case Data
+// ============================================
+function autoFillCaseData(caseData) {
+    if (!caseData) return;
+    
+    // Auto-fill case number
+    const caseNumberField = document.querySelector('input[name="case_number"]');
+    if (caseNumberField && caseData.case_number) {
+        caseNumberField.value = caseData.case_number;
+    }
+    
+    // Auto-fill date
+    const dateField = document.querySelector('input[name="report_date"]');
+    if (dateField) {
+        dateField.value = new Date().toISOString().split('T')[0];
+    }
+    
+    // Auto-fill victim name
+    const victimNameField = document.querySelector('input[name="victim_name"]');
+    if (victimNameField && caseData.victim_name) {
+        victimNameField.value = caseData.victim_name;
+    }
+    
+    // Auto-fill accused name
+    const accusedNameField = document.querySelector('input[name="accused_name"]');
+    if (accusedNameField && caseData.accused_name) {
+        accusedNameField.value = caseData.accused_name;
+    }
+    
+    // Auto-fill location
+    const locationField = document.querySelector('input[name="location"]');
+    if (locationField && caseData.location) {
+        locationField.value = caseData.location;
+    }
+    
+    // Auto-fill incident date/time
+    const incidentDateField = document.querySelector('input[name="incident_datetime"]');
+    if (incidentDateField && caseData.incident_date) {
+        incidentDateField.value = caseData.incident_date;
+    }
+    
+    // Auto-fill police officer info from logged-in user
+    const officerNameField = document.querySelector('input[name="officer_name"]');
+    const officerRankField = document.querySelector('input[name="officer_rank"]');
+    const officerPhoneField = document.querySelector('input[name="officer_phone"]');
+    
+    if (caseData.investigator) {
+        if (officerNameField) officerNameField.value = caseData.investigator.name || '';
+        if (officerRankField) officerRankField.value = caseData.investigator.rank || '';
+        if (officerPhoneField) officerPhoneField.value = caseData.investigator.phone || '';
+    }
+    
+    showToast('Case information auto-filled successfully', 'success');
+}
+
+// ============================================
+// Initialize Form Fields with Names
+// ============================================
+function initializeForm() {
+    // Add IDs and names to form fields for easier access
+    const formFields = [
+        { selector: 'input:eq(0)', name: 'report_date', id: 'reportDate' },
+        { selector: 'input:eq(1)', name: 'case_number', id: 'caseNumber' },
+        { selector: 'input:eq(2)', name: 'hospital_name', id: 'hospitalName' },
+        { selector: 'input:eq(3)', name: 'victim_name', id: 'victimName' },
+        { selector: 'input:eq(4)', name: 'accused_name', id: 'accusedName' },
+        { selector: 'input:eq(5)', name: 'age', id: 'age' },
+        { selector: 'input:eq(6)', name: 'location', id: 'location' },
+        { selector: 'input:eq(7)', name: 'incident_datetime', id: 'incidentDateTime' },
+        { selector: 'input:eq(8)', name: 'police_report_datetime', id: 'policeReportDateTime' },
+        { selector: 'textarea:eq(0)', name: 'crime_description', id: 'crimeDescription' },
+        { selector: 'input:eq(9)', name: 'kidnapping_status', id: 'kidnappingStatus' },
+        { selector: 'input:eq(10)', name: 'hospital_submission_date', id: 'hospitalSubmissionDate' },
+        { selector: 'input:eq(11)', name: 'police_station', id: 'policeStation' },
+        { selector: 'input:eq(12)', name: 'ob_number', id: 'obNumber' },
+        { selector: 'input:eq(13)', name: 'officer_name', id: 'officerName' },
+        { selector: 'input:eq(14)', name: 'officer_rank', id: 'officerRank' },
+        { selector: 'input:eq(15)', name: 'officer_position', id: 'officerPosition' },
+        { selector: 'input:eq(16)', name: 'officer_phone', id: 'officerPhone' },
+    ];
+    
+    // Set current date automatically
+    const today = new Date().toISOString().split('T')[0];
+    const dateInputs = document.querySelectorAll('input[name="report_date"], input[name="police_report_datetime"], input[name="hospital_submission_date"]');
+    dateInputs.forEach(input => {
+        if (!input.value) {
+            input.value = today;
+        }
+    });
+}
+
+// ============================================
+// Setup Event Listeners
+// ============================================
+function setupEventListeners() {
+    // Auto-save on form change
+    const formElements = document.querySelectorAll('input, textarea, select');
+    formElements.forEach(element => {
+        element.addEventListener('change', autoSaveForm);
+        element.addEventListener('input', debounce(autoSaveForm, 1000));
+    });
+    
+    // Load case from parent button
+    const loadCaseBtn = document.getElementById('loadCaseBtn');
+    if (loadCaseBtn) {
+        loadCaseBtn.addEventListener('click', getCaseDataFromParent);
+    }
+}
+
+// ============================================
+// Save/Load Draft Functionality
+// ============================================
+function autoSaveForm() {
+    const formData = collectFormData();
+    localStorage.setItem('medical_exam_draft', JSON.stringify(formData));
+    updateSaveStatus('Draft saved automatically');
+}
+
+function collectFormData() {
+    const formData = {};
+    
+    // Collect all input fields
+    document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(input => {
+        if (input.name || input.id) {
+            formData[input.name || input.id] = input.value;
+        }
+    });
+    
+    // Collect checkboxes
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        if (checkbox.name || checkbox.id) {
+            formData[checkbox.name || checkbox.id] = checkbox.checked;
+        }
+    });
+    
+    // Save signature data
+    if (signaturePad && !signaturePad.isEmpty()) {
+        formData.officer_signature = signaturePad.toDataURL();
+    }
+    
+    if (doctorSignaturePad && !doctorSignaturePad.isEmpty()) {
+        formData.doctor_signature = doctorSignaturePad.toDataURL();
+    }
+    
+    formData.saved_at = new Date().toISOString();
+    formData.case_id = currentCaseData ? currentCaseData.id : null;
+    
+    return formData;
+}
+
+function loadDraftIfExists() {
+    const draftData = localStorage.getItem('medical_exam_draft');
+    if (draftData) {
+        try {
+            const formData = JSON.parse(draftData);
+            loadFormData(formData);
+            showToast('Draft loaded from ' + new Date(formData.saved_at).toLocaleString(), 'info');
+        } catch (e) {
+            console.error('Error loading draft:', e);
+        }
+    }
+}
+
+function loadFormData(formData) {
+    // Load text inputs and textareas
+    Object.keys(formData).forEach(key => {
+        const element = document.querySelector(`[name="${key}"], #${key}`);
+        if (element) {
+            if (element.type === 'checkbox') {
+                element.checked = formData[key];
+            } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                element.value = formData[key];
+            }
+        }
+    });
+    
+    // Load signatures
+    if (formData.officer_signature && signaturePad) {
+        signaturePad.fromDataURL(formData.officer_signature);
+    }
+    
+    if (formData.doctor_signature && doctorSignaturePad) {
+        doctorSignaturePad.fromDataURL(formData.doctor_signature);
+    }
+}
+
+function saveDraft() {
+    autoSaveForm();
+    showToast('Draft saved successfully!', 'success');
+}
+
+function loadDraft() {
+    loadDraftIfExists();
+}
+
+function clearDraft() {
+    if (confirm('Are you sure you want to clear the draft? This cannot be undone.')) {
+        localStorage.removeItem('medical_exam_draft');
+        location.reload();
+    }
+}
+
+// ============================================
+// Digital Signature Pads
+// ============================================
+function setupSignaturePads() {
+    // Officer signature pad
+    const officerSigCanvas = document.getElementById('officerSignatureCanvas');
+    if (officerSigCanvas) {
+        signaturePad = new SignaturePad(officerSigCanvas, {
+            backgroundColor: 'rgb(255, 255, 255)',
+            penColor: 'rgb(0, 0, 0)'
+        });
+        
+        // Resize canvas
+        resizeCanvas(officerSigCanvas);
+        window.addEventListener('resize', () => resizeCanvas(officerSigCanvas));
+    }
+    
+    // Doctor signature pad
+    const doctorSigCanvas = document.getElementById('doctorSignatureCanvas');
+    if (doctorSigCanvas) {
+        doctorSignaturePad = new SignaturePad(doctorSigCanvas, {
+            backgroundColor: 'rgb(255, 255, 255)',
+            penColor: 'rgb(0, 0, 0)'
+        });
+        
+        // Resize canvas
+        resizeCanvas(doctorSigCanvas);
+        window.addEventListener('resize', () => resizeCanvas(doctorSigCanvas));
+    }
+}
+
+function resizeCanvas(canvas) {
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+}
+
+function clearOfficerSignature() {
+    if (signaturePad) {
+        signaturePad.clear();
+        autoSaveForm();
+    }
+}
+
+function clearDoctorSignature() {
+    if (doctorSignaturePad) {
+        doctorSignaturePad.clear();
+        autoSaveForm();
+    }
+}
+
+// ============================================
+// Utility Functions
+// ============================================
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+function updateSaveStatus(message) {
+    const statusElement = document.getElementById('saveStatus');
+    if (statusElement) {
+        statusElement.textContent = message;
+        statusElement.style.opacity = '1';
+        setTimeout(() => {
+            statusElement.style.opacity = '0';
+        }, 2000);
+    }
+}
+
+function showToast(message, type = 'info') {
+    // Simple toast notification
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// ============================================
+// Export Form Data
+// ============================================
+function exportFormAsJSON() {
+    const formData = collectFormData();
+    const dataStr = JSON.stringify(formData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `medical-exam-${formData.case_number || 'draft'}-${Date.now()}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+function importFormFromJSON() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+    input.onchange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const formData = JSON.parse(event.target.result);
+                loadFormData(formData);
+                showToast('Form data imported successfully!', 'success');
+            } catch (err) {
+                showToast('Error importing form data', 'error');
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+}
+
+// ============================================
+// Print with Signatures
+// ============================================
+function printFormWithSignatures() {
+    // Convert signatures to images before printing
+    if (signaturePad && !signaturePad.isEmpty()) {
+        const sigImage = signaturePad.toDataURL();
+        const sigLine = document.querySelector('.signature-line');
+        if (sigLine) {
+            sigLine.style.backgroundImage = `url(${sigImage})`;
+            sigLine.style.backgroundSize = 'contain';
+            sigLine.style.backgroundRepeat = 'no-repeat';
+        }
+    }
+    
+    if (doctorSignaturePad && !doctorSignaturePad.isEmpty()) {
+        const sigImage = doctorSignaturePad.toDataURL();
+        const sigLines = document.querySelectorAll('.signature-line');
+        if (sigLines[1]) {
+            sigLines[1].style.backgroundImage = `url(${sigImage})`;
+            sigLines[1].style.backgroundSize = 'contain';
+            sigLines[1].style.backgroundRepeat = 'no-repeat';
+        }
+    }
+    
+    window.print();
+}

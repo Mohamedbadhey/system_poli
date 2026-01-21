@@ -1,0 +1,700 @@
+ERROR - 2026-01-18 05:46:25 --> mysqli_sql_exception: Unknown column 'pc.name' in 'field list' in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('\r\n            S...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('\r\n            S...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('\r\n            S...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Station\CaseTrackingController.php(286): CodeIgniter\Database\BaseConnection->query('\r\n            S...', Array)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Station\CaseTrackingController->getInvestigatorProfile('30')
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Station\CaseTrackingController))
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#8 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#11 {main}
+CRITICAL - 2026-01-18 05:46:25 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'pc.name' in 'field list'
+[Method: GET, Route: station/investigators/30/profile]
+in SYSTEMPATH\Database\BaseConnection.php on line 684.
+ 1 APPPATH\Controllers\Station\CaseTrackingController.php(286): CodeIgniter\Database\BaseConnection->query('
+            SELECT 
+                u.id,
+                u.full_name,
+                u.badge_number,
+                u.email,
+                u.phone,
+                u.created_at,
+                pc.name as center_name,
+                
+                -- Performance metrics
+                COUNT(DISTINCT CASE 
+                    WHEN ca.status = \'active\' 
+                    AND c.status IN (\'assigned\', \'investigating\', \'evidence_collected\', \'suspect_identified\', \'under_review\')
+                    THEN ca.case_id 
+                END) as active_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status IN (\'closed\', \'archived\')
+                    THEN ca.case_id 
+                END) as completed_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status = \'returned\'
+                    THEN ca.case_id 
+                END) as failed_cases,
+                
+                AVG(CASE 
+                    WHEN c.status IN (\'closed\', \'archived\') AND c.closed_date IS NOT NULL
+                    THEN DATEDIFF(c.closed_date, ca.assigned_at)
+                END) as avg_completion_days,
+                
+                CASE 
+                    WHEN (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                          COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END)) > 0
+                    THEN ROUND(
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) * 100.0) / 
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                         COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END))
+                    )
+                    ELSE 0
+                END as success_rate
+                
+            FROM users u
+            LEFT JOIN police_centers pc ON pc.id = u.center_id
+            LEFT JOIN case_assignments ca ON ca.investigator_id = u.id
+            LEFT JOIN cases c ON c.id = ca.case_id
+            WHERE u.id = ?
+            AND u.center_id = ?
+            AND u.role = \'investigator\'
+            GROUP BY u.id, u.full_name, u.badge_number, u.email, u.phone, u.created_at, pc.name
+        ', [...])
+ 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Station\CaseTrackingController->getInvestigatorProfile('30')
+ 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Station\CaseTrackingController))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 8 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-18 05:46:25 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'pc.name' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 332.
+ 1 SYSTEMPATH\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('
+            SELECT 
+                u.id,
+                u.full_name,
+                u.badge_number,
+                u.email,
+                u.phone,
+                u.created_at,
+                pc.name as center_name,
+                
+                -- Performance metrics
+                COUNT(DISTINCT CASE 
+                    WHEN ca.status = \'active\' 
+                    AND c.status IN (\'assigned\', \'investigating\', \'evidence_collected\', \'suspect_identified\', \'under_review\')
+                    THEN ca.case_id 
+                END) as active_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status IN (\'closed\', \'archived\')
+                    THEN ca.case_id 
+                END) as completed_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status = \'returned\'
+                    THEN ca.case_id 
+                END) as failed_cases,
+                
+                AVG(CASE 
+                    WHEN c.status IN (\'closed\', \'archived\') AND c.closed_date IS NOT NULL
+                    THEN DATEDIFF(c.closed_date, ca.assigned_at)
+                END) as avg_completion_days,
+                
+                CASE 
+                    WHEN (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                          COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END)) > 0
+                    THEN ROUND(
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) * 100.0) / 
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                         COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END))
+                    )
+                    ELSE 0
+                END as success_rate
+                
+            FROM users u
+            LEFT JOIN police_centers pc ON pc.id = u.center_id
+            LEFT JOIN case_assignments ca ON ca.investigator_id = u.id
+            LEFT JOIN cases c ON c.id = ca.case_id
+            WHERE u.id = \'30\'
+            AND u.center_id = \'8\'
+            AND u.role = \'investigator\'
+            GROUP BY u.id, u.full_name, u.badge_number, u.email, u.phone, u.created_at, pc.name
+        ')
+ 2 SYSTEMPATH\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('
+            SELECT 
+                u.id,
+                u.full_name,
+                u.badge_number,
+                u.email,
+                u.phone,
+                u.created_at,
+                pc.name as center_name,
+                
+                -- Performance metrics
+                COUNT(DISTINCT CASE 
+                    WHEN ca.status = \'active\' 
+                    AND c.status IN (\'assigned\', \'investigating\', \'evidence_collected\', \'suspect_identified\', \'under_review\')
+                    THEN ca.case_id 
+                END) as active_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status IN (\'closed\', \'archived\')
+                    THEN ca.case_id 
+                END) as completed_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status = \'returned\'
+                    THEN ca.case_id 
+                END) as failed_cases,
+                
+                AVG(CASE 
+                    WHEN c.status IN (\'closed\', \'archived\') AND c.closed_date IS NOT NULL
+                    THEN DATEDIFF(c.closed_date, ca.assigned_at)
+                END) as avg_completion_days,
+                
+                CASE 
+                    WHEN (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                          COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END)) > 0
+                    THEN ROUND(
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) * 100.0) / 
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                         COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END))
+                    )
+                    ELSE 0
+                END as success_rate
+                
+            FROM users u
+            LEFT JOIN police_centers pc ON pc.id = u.center_id
+            LEFT JOIN case_assignments ca ON ca.investigator_id = u.id
+            LEFT JOIN cases c ON c.id = ca.case_id
+            WHERE u.id = \'30\'
+            AND u.center_id = \'8\'
+            AND u.role = \'investigator\'
+            GROUP BY u.id, u.full_name, u.badge_number, u.email, u.phone, u.created_at, pc.name
+        ')
+ 3 APPPATH\Controllers\Station\CaseTrackingController.php(286): CodeIgniter\Database\BaseConnection->query('
+            SELECT 
+                u.id,
+                u.full_name,
+                u.badge_number,
+                u.email,
+                u.phone,
+                u.created_at,
+                pc.name as center_name,
+                
+                -- Performance metrics
+                COUNT(DISTINCT CASE 
+                    WHEN ca.status = \'active\' 
+                    AND c.status IN (\'assigned\', \'investigating\', \'evidence_collected\', \'suspect_identified\', \'under_review\')
+                    THEN ca.case_id 
+                END) as active_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status IN (\'closed\', \'archived\')
+                    THEN ca.case_id 
+                END) as completed_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status = \'returned\'
+                    THEN ca.case_id 
+                END) as failed_cases,
+                
+                AVG(CASE 
+                    WHEN c.status IN (\'closed\', \'archived\') AND c.closed_date IS NOT NULL
+                    THEN DATEDIFF(c.closed_date, ca.assigned_at)
+                END) as avg_completion_days,
+                
+                CASE 
+                    WHEN (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                          COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END)) > 0
+                    THEN ROUND(
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) * 100.0) / 
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                         COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END))
+                    )
+                    ELSE 0
+                END as success_rate
+                
+            FROM users u
+            LEFT JOIN police_centers pc ON pc.id = u.center_id
+            LEFT JOIN case_assignments ca ON ca.investigator_id = u.id
+            LEFT JOIN cases c ON c.id = ca.case_id
+            WHERE u.id = ?
+            AND u.center_id = ?
+            AND u.role = \'investigator\'
+            GROUP BY u.id, u.full_name, u.badge_number, u.email, u.phone, u.created_at, pc.name
+        ', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Station\CaseTrackingController->getInvestigatorProfile('30')
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Station\CaseTrackingController))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-18 05:46:25 --> [Caused by] mysqli_sql_exception: Unknown column 'pc.name' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 327.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(327): mysqli->query('
+            SELECT 
+                u.id,
+                u.full_name,
+                u.badge_number,
+                u.email,
+                u.phone,
+                u.created_at,
+                pc.name as center_name,
+                
+                -- Performance metrics
+                COUNT(DISTINCT CASE 
+                    WHEN ca.status = \'active\' 
+                    AND c.status IN (\'assigned\', \'investigating\', \'evidence_collected\', \'suspect_identified\', \'under_review\')
+                    THEN ca.case_id 
+                END) as active_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status IN (\'closed\', \'archived\')
+                    THEN ca.case_id 
+                END) as completed_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status = \'returned\'
+                    THEN ca.case_id 
+                END) as failed_cases,
+                
+                AVG(CASE 
+                    WHEN c.status IN (\'closed\', \'archived\') AND c.closed_date IS NOT NULL
+                    THEN DATEDIFF(c.closed_date, ca.assigned_at)
+                END) as avg_completion_days,
+                
+                CASE 
+                    WHEN (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                          COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END)) > 0
+                    THEN ROUND(
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) * 100.0) / 
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                         COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END))
+                    )
+                    ELSE 0
+                END as success_rate
+                
+            FROM users u
+            LEFT JOIN police_centers pc ON pc.id = u.center_id
+            LEFT JOIN case_assignments ca ON ca.investigator_id = u.id
+            LEFT JOIN cases c ON c.id = ca.case_id
+            WHERE u.id = \'30\'
+            AND u.center_id = \'8\'
+            AND u.role = \'investigator\'
+            GROUP BY u.id, u.full_name, u.badge_number, u.email, u.phone, u.created_at, pc.name
+        ', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('
+            SELECT 
+                u.id,
+                u.full_name,
+                u.badge_number,
+                u.email,
+                u.phone,
+                u.created_at,
+                pc.name as center_name,
+                
+                -- Performance metrics
+                COUNT(DISTINCT CASE 
+                    WHEN ca.status = \'active\' 
+                    AND c.status IN (\'assigned\', \'investigating\', \'evidence_collected\', \'suspect_identified\', \'under_review\')
+                    THEN ca.case_id 
+                END) as active_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status IN (\'closed\', \'archived\')
+                    THEN ca.case_id 
+                END) as completed_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status = \'returned\'
+                    THEN ca.case_id 
+                END) as failed_cases,
+                
+                AVG(CASE 
+                    WHEN c.status IN (\'closed\', \'archived\') AND c.closed_date IS NOT NULL
+                    THEN DATEDIFF(c.closed_date, ca.assigned_at)
+                END) as avg_completion_days,
+                
+                CASE 
+                    WHEN (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                          COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END)) > 0
+                    THEN ROUND(
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) * 100.0) / 
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                         COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END))
+                    )
+                    ELSE 0
+                END as success_rate
+                
+            FROM users u
+            LEFT JOIN police_centers pc ON pc.id = u.center_id
+            LEFT JOIN case_assignments ca ON ca.investigator_id = u.id
+            LEFT JOIN cases c ON c.id = ca.case_id
+            WHERE u.id = \'30\'
+            AND u.center_id = \'8\'
+            AND u.role = \'investigator\'
+            GROUP BY u.id, u.full_name, u.badge_number, u.email, u.phone, u.created_at, pc.name
+        ')
+ 3 SYSTEMPATH\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('
+            SELECT 
+                u.id,
+                u.full_name,
+                u.badge_number,
+                u.email,
+                u.phone,
+                u.created_at,
+                pc.name as center_name,
+                
+                -- Performance metrics
+                COUNT(DISTINCT CASE 
+                    WHEN ca.status = \'active\' 
+                    AND c.status IN (\'assigned\', \'investigating\', \'evidence_collected\', \'suspect_identified\', \'under_review\')
+                    THEN ca.case_id 
+                END) as active_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status IN (\'closed\', \'archived\')
+                    THEN ca.case_id 
+                END) as completed_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status = \'returned\'
+                    THEN ca.case_id 
+                END) as failed_cases,
+                
+                AVG(CASE 
+                    WHEN c.status IN (\'closed\', \'archived\') AND c.closed_date IS NOT NULL
+                    THEN DATEDIFF(c.closed_date, ca.assigned_at)
+                END) as avg_completion_days,
+                
+                CASE 
+                    WHEN (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                          COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END)) > 0
+                    THEN ROUND(
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) * 100.0) / 
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                         COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END))
+                    )
+                    ELSE 0
+                END as success_rate
+                
+            FROM users u
+            LEFT JOIN police_centers pc ON pc.id = u.center_id
+            LEFT JOIN case_assignments ca ON ca.investigator_id = u.id
+            LEFT JOIN cases c ON c.id = ca.case_id
+            WHERE u.id = \'30\'
+            AND u.center_id = \'8\'
+            AND u.role = \'investigator\'
+            GROUP BY u.id, u.full_name, u.badge_number, u.email, u.phone, u.created_at, pc.name
+        ')
+ 4 APPPATH\Controllers\Station\CaseTrackingController.php(286): CodeIgniter\Database\BaseConnection->query('
+            SELECT 
+                u.id,
+                u.full_name,
+                u.badge_number,
+                u.email,
+                u.phone,
+                u.created_at,
+                pc.name as center_name,
+                
+                -- Performance metrics
+                COUNT(DISTINCT CASE 
+                    WHEN ca.status = \'active\' 
+                    AND c.status IN (\'assigned\', \'investigating\', \'evidence_collected\', \'suspect_identified\', \'under_review\')
+                    THEN ca.case_id 
+                END) as active_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status IN (\'closed\', \'archived\')
+                    THEN ca.case_id 
+                END) as completed_cases,
+                
+                COUNT(DISTINCT CASE 
+                    WHEN c.status = \'returned\'
+                    THEN ca.case_id 
+                END) as failed_cases,
+                
+                AVG(CASE 
+                    WHEN c.status IN (\'closed\', \'archived\') AND c.closed_date IS NOT NULL
+                    THEN DATEDIFF(c.closed_date, ca.assigned_at)
+                END) as avg_completion_days,
+                
+                CASE 
+                    WHEN (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                          COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END)) > 0
+                    THEN ROUND(
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) * 100.0) / 
+                        (COUNT(DISTINCT CASE WHEN c.status IN (\'closed\', \'archived\') THEN ca.case_id END) + 
+                         COUNT(DISTINCT CASE WHEN c.status = \'returned\' THEN ca.case_id END))
+                    )
+                    ELSE 0
+                END as success_rate
+                
+            FROM users u
+            LEFT JOIN police_centers pc ON pc.id = u.center_id
+            LEFT JOIN case_assignments ca ON ca.investigator_id = u.id
+            LEFT JOIN cases c ON c.id = ca.case_id
+            WHERE u.id = ?
+            AND u.center_id = ?
+            AND u.role = \'investigator\'
+            GROUP BY u.id, u.full_name, u.badge_number, u.email, u.phone, u.created_at, pc.name
+        ', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Station\CaseTrackingController->getInvestigatorProfile('30')
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Station\CaseTrackingController))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+ERROR - 2026-01-18 09:29:45 --> mysqli_sql_exception: Unknown column 'cases.category_id' in 'on clause' in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `categor...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `categor...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `categor...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `categor...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Admin\DashboardController.php(182): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+#7 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#12 {main}
+CRITICAL - 2026-01-18 09:29:45 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'cases.category_id' in 'on clause'
+[Method: GET, Route: admin/dashboard/stats]
+in SYSTEMPATH\Database\BaseConnection.php on line 684.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC', [], false)
+ 2 APPPATH\Controllers\Admin\DashboardController.php(182): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-18 09:29:45 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'cases.category_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 332.
+ 1 SYSTEMPATH\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC', [], false)
+ 4 APPPATH\Controllers\Admin\DashboardController.php(182): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-18 09:29:45 --> [Caused by] mysqli_sql_exception: Unknown column 'cases.category_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 327.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC', [], false)
+ 5 APPPATH\Controllers\Admin\DashboardController.php(182): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+ERROR - 2026-01-18 09:30:22 --> mysqli_sql_exception: Unknown column 'cases.category_id' in 'on clause' in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `categor...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `categor...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `categor...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `categor...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Admin\DashboardController.php(182): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+#7 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#12 {main}
+CRITICAL - 2026-01-18 09:30:22 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'cases.category_id' in 'on clause'
+[Method: GET, Route: admin/dashboard/stats]
+in SYSTEMPATH\Database\BaseConnection.php on line 684.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC', [], false)
+ 2 APPPATH\Controllers\Admin\DashboardController.php(182): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-18 09:30:22 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'cases.category_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 332.
+ 1 SYSTEMPATH\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC', [], false)
+ 4 APPPATH\Controllers\Admin\DashboardController.php(182): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-18 09:30:22 --> [Caused by] mysqli_sql_exception: Unknown column 'cases.category_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 327.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `categories`.`id`, `categories`.`name`, `categories`.`icon`, `categories`.`color`, COUNT(cases.id) as count
+FROM `cases`
+LEFT JOIN `categories` ON `categories`.`id` = `cases`.`category_id`
+GROUP BY `cases`.`category_id`
+ORDER BY `count` DESC', [], false)
+ 5 APPPATH\Controllers\Admin\DashboardController.php(182): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+ERROR - 2026-01-18 09:36:25 --> mysqli_sql_exception: Unknown column 'release_type' in 'where clause' in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT COUNT(*)...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*)...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*)...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*)...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Admin\DashboardController.php(219): CodeIgniter\Database\BaseBuilder->countAllResults()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+#7 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#12 {main}
+CRITICAL - 2026-01-18 09:36:25 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'release_type' in 'where clause'
+[Method: GET, Route: admin/dashboard/stats]
+in SYSTEMPATH\Database\BaseConnection.php on line 684.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `custody_records`
+WHERE `release_type` = :release_type:', [...], false)
+ 2 APPPATH\Controllers\Admin\DashboardController.php(219): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-18 09:36:25 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'release_type' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 332.
+ 1 SYSTEMPATH\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `custody_records`
+WHERE `release_type` = \'bail\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `custody_records`
+WHERE `release_type` = \'bail\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `custody_records`
+WHERE `release_type` = :release_type:', [...], false)
+ 4 APPPATH\Controllers\Admin\DashboardController.php(219): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-18 09:36:25 --> [Caused by] mysqli_sql_exception: Unknown column 'release_type' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 327.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(327): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `custody_records`
+WHERE `release_type` = \'bail\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `custody_records`
+WHERE `release_type` = \'bail\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `custody_records`
+WHERE `release_type` = \'bail\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `custody_records`
+WHERE `release_type` = :release_type:', [...], false)
+ 5 APPPATH\Controllers\Admin\DashboardController.php(219): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Admin\DashboardController->stats()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\DashboardController))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Cases - PCMS</title>
+</head>
+<body>
+    <div class="container-fluid mt-4">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>
+                    <i class="fas fa-briefcase text-primary"></i>
+                    <span data-translate="all_cases">All Cases</span>
+                </h2>
+                <p class="text-muted mb-0">
+                    <span data-translate="all_cases_description">All cases assigned to you</span>
+                </p>
+            </div>
+            <div>
+                <button class="btn btn-outline-secondary" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-translate="back">Back</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label" data-translate="status">Status</label>
+                        <select id="statusFilter" class="form-select" onchange="filterAllCases()">
+                            <option value="">All Statuses</option>
+                            <option value="assigned">Assigned</option>
+                            <option value="investigating">Investigating</option>
+                            <option value="under_investigation">Under Investigation</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" data-translate="priority">Priority</label>
+                        <select id="priorityFilter" class="form-select" onchange="filterAllCases()">
+                            <option value="">All Priorities</option>
+                            <option value="urgent">Urgent</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" data-translate="search">Search</label>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search by case number or category..." onkeyup="filterAllCases()">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <button class="btn btn-secondary w-100" onclick="clearFilters()">
+                            <i class="fas fa-redo"></i>
+                            <span data-translate="clear">Clear</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cases Table -->
+        <div class="card">
+            <div class="card-body">
+                <div id="casesTableContainer">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Loading cases...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allCasesData = [];
+
+        // Load all cases on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[ALL-CASES] Page loaded, calling loadAllCases()');
+            loadAllCases();
+        });
+
+        // Load all cases
+        async function loadAllCases() {
+            try {
+                console.log('[ALL-CASES] Fetching cases from investigationAPI.getCases()');
+                // Use the investigation API endpoint
+                const response = await investigationAPI.getCases();
+                
+                if (response.status === 'success') {
+                    allCasesData = response.data || [];
+                    renderCasesTable(allCasesData);
+                } else {
+                    showError('Failed to load cases');
+                }
+            } catch (error) {
+                console.error('Error loading cases:', error);
+                showError('Error loading cases: ' + error.message);
+            }
+        }
+
+        // Render cases table
+        function renderCasesTable(cases) {
+            const container = document.getElementById('casesTableContainer');
+            
+            if (cases.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                        <p class="text-muted">No cases found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Case Number</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Created Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            cases.forEach(caseItem => {
+                html += `
+                    <tr>
+                        <td><strong>${caseItem.case_number || 'N/A'}</strong></td>
+                        <td>${caseItem.crime_category || caseItem.crime_type || 'N/A'}</td>
+                        <td><span class="badge bg-${getStatusColor(caseItem.status)}">${caseItem.status || 'Unknown'}</span></td>
+                        <td>${caseItem.priority ? `<span class="badge bg-${getPriorityColor(caseItem.priority)}">${caseItem.priority}</span>` : '-'}</td>
+                        <td>${formatDate(caseItem.created_at)}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="viewCase(${caseItem.id})">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3 text-muted">
+                    <i class="fas fa-info-circle"></i> Showing ${cases.length} cases
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Filter cases
+        function filterAllCases() {
+            const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+            const priorityFilter = document.getElementById('priorityFilter').value.toLowerCase();
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = allCasesData.filter(caseItem => {
+                const matchStatus = !statusFilter || (caseItem.status || '').toLowerCase() === statusFilter;
+                const matchPriority = !priorityFilter || (caseItem.priority || '').toLowerCase() === priorityFilter;
+                const matchSearch = !searchTerm || 
+                    (caseItem.case_number || '').toLowerCase().includes(searchTerm) ||
+                    (caseItem.crime_category || '').toLowerCase().includes(searchTerm) ||
+                    (caseItem.crime_type || '').toLowerCase().includes(searchTerm);
+
+                return matchStatus && matchPriority && matchSearch;
+            });
+
+            renderCasesTable(filtered);
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            renderCasesTable(allCasesData);
+        }
+
+        // View case
+        function viewCase(caseId) {
+            loadPage('investigations');
+            setTimeout(() => {
+                if (typeof viewCaseDetails === 'function') {
+                    viewCaseDetails(caseId);
+                }
+            }, 500);
+        }
+
+        // Helper functions
+        function getStatusColor(status) {
+            const colors = {
+                'assigned': 'info',
+                'investigating': 'warning',
+                'under_investigation': 'warning',
+                'closed': 'success',
+                'pending': 'secondary'
+            };
+            return colors[status] || 'secondary';
+        }
+
+        function getPriorityColor(priority) {
+            const colors = {
+                'urgent': 'danger',
+                'high': 'warning',
+                'medium': 'info',
+                'low': 'success'
+            };
+            return colors[priority] || 'secondary';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function showError(message) {
+            document.getElementById('casesTableContainer').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i> ${message}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

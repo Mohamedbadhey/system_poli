@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification - Jubaland Police</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/non-criminal-certificate-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        .loading-content {
+            text-align: center;
+        }
+        
+        .loading-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Verification badge */
+        .verification-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            max-width: 210mm;
+            margin: 0 auto 20px auto;
+        }
+        
+        .verification-badge i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        /* Print button */
+        .print-button {
+            text-align: center;
+            margin: 20px 0;
+            max-width: 210mm;
+            margin: 20px auto;
+        }
+        
+        .print-button button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .print-button button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        /* Print styles - signature at absolute bottom */
+        @media print {
+            /* Hide verification badge, print button, and any icons/watermarks */
+            .verification-badge,
+            .print-button,
+            .no-print,
+            i,
+            .fas,
+            .fa,
+            .fab,
+            .far,
+            [class*="fa-"] {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            
+            /* Remove any :after or :before content */
+            body:after,
+            body:before,
+            .certificate-container:after,
+            .certificate-container:before,
+            .certificate-page:after,
+            .certificate-page:before {
+                display: none !important;
+                content: none !important;
+            }
+            
+            /* Keep on single page */
+            .certificate-container,
+            .certificate-page {
+                page-break-inside: avoid !important;
+                page-break-after: avoid !important;
+            }
+            
+            /* Don't force min-height - causes blank page */
+            
+            /* Compact spacing for top sections */
+            .certificate-header-new {
+                margin-bottom: 5px !important;
+            }
+            
+            .org-name-section {
+                margin-bottom: 5px !important;
+            }
+            
+            .ref-date-row {
+                margin-bottom: 8px !important;
+                margin-top: 3px !important;
+            }
+            
+            .certificate-title-horizontal {
+                margin: 8px 0 !important;
+                padding: 5px 0 !important;
+            }
+            
+            .to-whom {
+                margin-bottom: 8px !important;
+            }
+            
+            .person-info-section {
+                margin-bottom: 10px !important;
+            }
+            
+            .certificate-content {
+                margin-bottom: 10px !important;
+            }
+            
+            .certificate-content .paragraph {
+                margin-bottom: 6px !important;
+                line-height: 1.3 !important;
+            }
+            
+            /* Signature section */
+            .signature-section {
+                margin-top: 20px !important;
+            }
+            
+            .footer-note {
+                margin-top: 8px !important;
+                padding-top: 5px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <p class="loading-text">Verifying certificate...</p>
+        </div>
+    </div>
+
+    <!-- Verification Badge -->
+    <div class="verification-badge" id="verificationBadge" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <strong style="font-size: 18px;">✓ VERIFIED CERTIFICATE</strong>
+        <p style="margin-top: 5px; font-size: 14px; opacity: 0.9;">This certificate has been verified as authentic</p>
+    </div>
+
+    <!-- Print Button -->
+    <div class="print-button" id="printButton" style="display: none;">
+        <button onclick="window.print()">
+            <i class="fas fa-print"></i> Print Certificate
+        </button>
+    </div>
+
+    <!-- Certificate Container (Exact same as non-criminal-certificate.html) -->
+    <div class="certificate-container" id="certificateContainer" style="display: none;">
+        <div class="certificate-page">
+            <!-- Header with Logo -->
+            <div class="certificate-header-new">
+                <div class="header-left-section">
+                    <div class="header-line">TALISKA QEYBTA BOOLISKA</div>
+                    <div class="header-line">GOBOLKA JUBADA HOOSE EE</div>
+                    <div class="header-line">DOWLAD GOBALEEDKA</div>
+                    <div class="header-line">JUBALAND EE SOMAALIYA</div>
+                </div>
+                <div class="header-center-logo">
+                    <img src="/assets/images/logo.png" alt="Police Logo" style="max-width: 150px; height: auto;">
+                </div>
+                <div class="header-right-section">
+                    <div class="header-line">THE POLICE HEAD QUARTER</div>
+                    <div class="header-line">FOR THE LOWER JUBA OF</div>
+                    <div class="header-line">JUBALAND STATE OF</div>
+                    <div class="header-line">SOMALIA</div>
+                </div>
+            </div>
+
+            <!-- Organization Name -->
+            <div class="org-name-section">
+                <div class="org-name-bold">HOGAANKA BAARISTA DAMBIYADA CID</div>
+                <div class="org-name-english">Criminal Investigation Directorate of Jubaland Police</div>
+            </div>
+
+            <div class="blue-line"></div>
+
+            <!-- Reference and Date -->
+            <div class="ref-date-row">
+                <div class="ref-number">
+                    <label style="font-weight: bold;">Ref No:</label>
+                    <span id="certRefNumber"></span>
+                </div>
+                <div class="date-field">
+                    <label style="font-weight: bold;">Date:</label>
+                    <span id="certIssueDate"></span>
+                </div>
+            </div>
+
+            <!-- Certificate Title (Horizontal Somali/English) -->
+            <div class="certificate-title-horizontal">
+                <div class="title-left">SHAHAADO DAMBI-LA'AAN</div>
+                <div class="title-right">NON-CRIMINAL CERTIFICATE</div>
+            </div>
+
+            <!-- To Whom -->
+            <div class="to-whom">
+                <span>To Whom It May Concern</span>
+            </div>
+
+            <!-- Person Info Section -->
+            <div class="person-info-section">
+                <!-- Person Details -->
+                <div class="person-details">
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <span id="certPersonName" style="border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; display: inline-block; min-width: 300px; text-transform: uppercase;"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-somali">Magaca/name:</span>
+                    </div>
+                    
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <span id="certMotherName" style="border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; display: inline-block; min-width: 300px;"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-bilingual">Magaca hooyada/ mothers name:</span>
+                    </div>
+                    
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <span id="certGender" style="border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; display: inline-block; min-width: 150px;"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-bilingual">Jinsi/ gender:</span>
+                    </div>
+                    
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <span id="certBirthDate" style="border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; display: inline-block; min-width: 200px;"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-bilingual">Taariikhda dhalasha / date of birth:</span>
+                    </div>
+                    
+                    <div class="detail-row" style="margin-top: 10px;">
+                        <span id="certBirthPlace" style="border-bottom: 1px solid #000; font-size: 14px; font-weight: bold; display: inline-block; min-width: 300px;"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-bilingual">Goobta dhalashada/ place of birth:</span>
+                    </div>
+                </div>
+                
+                <!-- Person Photo -->
+                <div class="person-photo">
+                    <div id="photoPreview" style="width: 150px; height: 180px; border: 2px solid #000; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <img id="certPhoto" src="" alt="Photo" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                        <i class="fas fa-user no-print" id="photoPlaceholder" style="font-size: 60px; color: #ccc;"></i>
+                    </div>
+                    <div style="text-align: center; margin-top: 5px; font-size: 10px; color: #0066cc;">
+                        <span id="refPhotoText"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content (Certificate Paragraphs) -->
+            <div class="certificate-content">
+                <p class="paragraph" id="paragraph1"></p>
+                <p class="paragraph" id="paragraph2"></p>
+                <p class="paragraph" id="paragraph3"></p>
+            </div>
+
+            <!-- Signature Section -->
+            <div class="signature-section">
+                <!-- Director Signature (LEFT) -->
+                <div class="signature-block">
+                    <div class="signature-title">Director of Criminal Investigation Directorate</div>
+                    <div class="director-name">
+                        <span style="font-weight: bold;">Cap:</span> 
+                        <span id="directorName" style="font-size: 14px;">Director Name</span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <span style="font-weight: bold;">Signature:</span>
+                        <div style="border-bottom: 1px solid #333; min-height: 60px; width: 250px; display: inline-block; vertical-align: bottom;">
+                            <img id="directorSignature" src="" alt="Signature" style="max-height: 60px; max-width: 250px; display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code (RIGHT) -->
+                <div class="qr-code-section">
+                    <div id="qrCodeContainer" class="qr-code-box">
+                        <span class="no-print" style="font-size: 10px; color: #999;">QR Code</span>
+                    </div>
+                    <div class="qr-label">Scan to Verify</div>
+                </div>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="footer-note">
+                <p><strong>Note:</strong> This certificate is issued for official purposes and is valid for the specified period.</p>
+                <p style="margin-top: 5px;">For verification, scan the QR code or visit our official website.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Extract token from URL
+        const urlPath = window.location.pathname;
+        const token = urlPath.split('/').pop();
+        
+        // Verify certificate on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (token && token !== 'verify-certificate.html') {
+                verifyCertificate(token);
+            } else {
+                showError('No verification token provided', 'Please scan a valid QR code');
+            }
+        });
+        
+        async function verifyCertificate(token) {
+            try {
+                const baseUrl = window.location.origin;
+                const endpoint = `${baseUrl}/verify-certificate/${token}`;
+                
+                const response = await fetch(endpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.valid && result.status === 'success') {
+                    displayCertificate(result.data);
+                } else if (result.status === 'warning') {
+                    showError('Certificate Revoked', result.message);
+                } else {
+                    showError('Certificate Not Found', result.message || 'This certificate could not be verified');
+                }
+                
+            } catch (error) {
+                console.error('Verification error:', error);
+                showError('Verification Failed', 'Unable to verify the certificate. Please try again later.');
+            }
+        }
+        
+        function displayCertificate(cert) {
+            // Hide loading
+            document.getElementById('loadingOverlay').style.display = 'none';
+            
+            // Show verification badge and print button
+            document.getElementById('verificationBadge').style.display = 'block';
+            document.getElementById('printButton').style.display = 'block';
+            document.getElementById('certificateContainer').style.display = 'block';
+            
+            // Fill in certificate data
+            document.getElementById('certRefNumber').textContent = cert.certificate_number || 'N/A';
+            document.getElementById('certIssueDate').textContent = formatDate(cert.issue_date);
+            
+            // Fill person details section
+            document.getElementById('certPersonName').textContent = cert.person_name || 'N/A';
+            document.getElementById('certMotherName').textContent = cert.mother_name || 'N/A';
+            document.getElementById('certGender').textContent = cert.gender || 'N/A';
+            document.getElementById('certBirthDate').textContent = cert.birth_date ? formatDateShort(cert.birth_date) : 'N/A';
+            document.getElementById('certBirthPlace').textContent = cert.birth_place || 'KISMAIO, SOMALIA';
+            
+            // Reference number under photo
+            document.getElementById('refPhotoText').textContent = `Ref:${cert.certificate_number || 'N/A'}`;
+            
+            // Build 3 paragraphs (exactly like original)
+            const personName = cert.person_name || 'N/A';
+            const birthDateLong = cert.birth_date ? formatDateLong(cert.birth_date) : 'N/A';
+            const birthPlace = cert.birth_place || 'Kismaio';
+            
+            // Paragraph 1
+            document.getElementById('paragraph1').innerHTML = `This is to certify that <span style="font-weight: bold; border-bottom: 1px solid #000; display: inline-block; min-width: 200px;">${personName}</span> born on <span class="inline-input">${birthDateLong}</span> in <span class="inline-input">${birthPlace}</span>, Somalia has no criminal record registered in the records of the Criminal Investigation directorate of Jubaland Police.`;
+            
+            // Paragraph 2
+            document.getElementById('paragraph2').innerHTML = `<span style="font-weight: bold;">${personName}</span> has undergone a comprehensive background check and has been found to have no criminal history within the jurisdiction of Jubaland State.`;
+            
+            // Paragraph 3
+            const purpose = cert.purpose || 'visa application, education, or other official needs';
+            const validity = cert.validity_period || '6 months';
+            document.getElementById('paragraph3').innerHTML = `This certificate is issued upon the request of <span style="font-weight: bold;">${personName}</span> for international purposes, such as <span class="inline-input">${purpose}</span> is valid for a period of <span class="inline-input">${validity}</span> from the date of issue.`;
+            
+            // Display photo if available
+            if (cert.photo_path) {
+                document.getElementById('certPhoto').src = cert.photo_path;
+                document.getElementById('certPhoto').style.display = 'block';
+                document.getElementById('photoPlaceholder').style.display = 'none';
+            }
+            
+            // Display director signature if available
+            if (cert.director_signature) {
+                document.getElementById('directorSignature').src = cert.director_signature;
+                document.getElementById('directorSignature').style.display = 'block';
+            }
+            
+            // Display director name if available
+            if (cert.director_name) {
+                document.getElementById('directorName').textContent = cert.director_name;
+            }
+            
+            // Generate QR code
+            generateQRCode(window.location.href);
+        }
+        
+        function formatDateShort(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US');
+        }
+        
+        function formatDateLong(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            const year = date.getFullYear();
+            
+            // Add ordinal suffix
+            let suffix = 'th';
+            if (day === 1 || day === 21 || day === 31) suffix = 'st';
+            else if (day === 2 || day === 22) suffix = 'nd';
+            else if (day === 3 || day === 23) suffix = 'rd';
+            
+            return `${day}${suffix} ${month}, ${year}`;
+        }
+        
+        function generateQRCode(url) {
+            const container = document.getElementById('qrCodeContainer');
+            container.innerHTML = ''; // Clear any existing QR code
+            
+            try {
+                new QRCode(container, {
+                    text: url,
+                    width: 120,
+                    height: 120,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            } catch (error) {
+                console.error('QR code generation error:', error);
+                container.innerHTML = '<span class="no-print" style="font-size: 10px; color: #999;">QR Error</span>';
+            }
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        function showError(title, message) {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.body.innerHTML = `
+                <div style="max-width: 600px; margin: 100px auto; text-align: center; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <i class="fas fa-times-circle" style="font-size: 64px; color: #ef4444; margin-bottom: 20px;"></i>
+                    <h2 style="font-size: 28px; color: #333; margin-bottom: 15px;">${title}</h2>
+                    <p style="font-size: 16px; color: #666; margin-bottom: 30px;">${message}</p>
+                    <button onclick="location.reload()" style="background: #667eea; color: white; border: none; padding: 12px 30px; font-size: 16px; border-radius: 8px; cursor: pointer;">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

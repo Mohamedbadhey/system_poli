@@ -1,0 +1,1361 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Report - CASE/XGD-01/2026/0001</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @page { 
+            margin: 0.75cm; 
+            size: A4 portrait;
+        }
+        
+        body { 
+            font-family: 'Georgia', 'Times New Roman', serif; 
+            line-height: 1.4; 
+            color: #1a1a1a; 
+            background: #f5f5f5; 
+            padding: 0;
+            font-size: 10pt;
+        }
+        
+        .report-container { 
+            max-width: 210mm; 
+            margin: 20px auto; 
+            background: white; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+        
+        /* Header Letterhead */
+        .report-letterhead {
+            background: white;
+            padding: 0;
+            border: none;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .letterhead-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+        
+        .no-header-placeholder {
+            padding: 40px;
+            text-align: center;
+            background: #f5f5f5;
+            border-bottom: 3px solid #ddd;
+        }
+        
+        .no-header-placeholder i {
+            font-size: 48px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .no-header-placeholder p {
+            color: #666;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        
+        /* Case Numbers Section */
+        .case-numbers-section { 
+            background: white;
+            padding: 12px 40px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .case-numbers-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .case-numbers-left {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .case-number-item h3 {
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 3px;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .case-number-item p {
+            font-size: 15px;
+            font-weight: 700;
+            color: #000;
+        }
+        
+        .report-date {
+            text-align: right;
+        }
+        
+        .report-date h3 {
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 3px;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .report-date p {
+            font-size: 15px;
+            font-weight: 700;
+            color: #000;
+        }
+        
+        /* Statements Section */
+        .statements-section {
+            background: white;
+            padding: 15px 40px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .statement-1-2 {
+            margin-bottom: 15px;
+        }
+        
+        .statement-box {
+            margin-bottom: 3px;
+            line-height: 1.4;
+            color: #000;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        
+        .statement-box:last-child {
+            margin-bottom: 0;
+        }
+        
+        .statement-separator {
+            margin: 15px 0 0 0;
+            padding: 12px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .statement-3 {
+            text-align: center;
+            font-weight: 700;
+            text-decoration: underline;
+            color: #000;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .report-body { 
+            padding: 20px 40px; 
+        }
+        
+        /* Meta Information */
+        .report-meta { 
+            background: #fafafa; 
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .meta-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .meta-value {
+            font-size: 15px;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+        
+        /* Sections */
+        .report-section { 
+            margin-bottom: 15px; 
+            page-break-inside: avoid;
+            orphans: 3;
+            widows: 3;
+        }
+        
+        .section-header { 
+            font-size: 13pt; 
+            font-weight: 700; 
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-icon {
+            width: 8px;
+            height: 8px;
+            background: #c9b037;
+            display: inline-block;
+        }
+        
+        .section-body { }
+        
+        /* Description */
+        .description-box { 
+            background: white;
+            border-left: 4px solid #c9b037; 
+            padding: 15px 20px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        /* Person Cards */
+        .person-card { 
+            background: white; 
+            border: 1px solid #e0e0e0;
+            margin-bottom: 12px; 
+            page-break-inside: avoid;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            orphans: 2;
+            widows: 2;
+        }
+        
+        .person-row {
+            display: flex;
+            padding: 15px;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        .person-photo-wrapper { 
+            width: 80px; 
+            height: 100px; 
+            flex-shrink: 0;
+            border: 2px solid #1a1a1a;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+        
+        .person-photo { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block;
+        }
+        
+        .photo-placeholder-fallback { 
+            width: 100%; 
+            height: 100%; 
+            background: #1a1a1a;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 32px; 
+            font-weight: 700;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .person-info { 
+            flex: 1; 
+        }
+        
+        .person-name { 
+            font-size: 13pt; 
+            color: #1a1a1a; 
+            margin-bottom: 8px; 
+            font-weight: 700;
+        }
+        
+        .person-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .info-pair {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .info-label { 
+            font-size: 12px; 
+            color: #666;
+            font-weight: 700;
+            min-width: 70px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .info-value { 
+            font-size: 13px; 
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+        
+        .person-statement {
+            padding: 12px 15px;
+            background: #fafafa;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .statement-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .statement-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        /* Tables */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        table th { 
+            background: #1a1a1a;
+            color: white; 
+            padding: 15px 20px; 
+            text-align: left; 
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        table td { 
+            padding: 15px 20px; 
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+        
+        table tr:hover { 
+            background: #fafafa; 
+        }
+        
+        /* Print Button */
+        .print-btn { 
+            position: fixed; 
+            top: 30px; 
+            right: 30px; 
+            padding: 12px 30px; 
+            background: #1a1a1a;
+            color: white; 
+            border: 2px solid #c9b037;
+            cursor: pointer; 
+            font-size: 14px; 
+            font-weight: 700;
+            z-index: 1000;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .print-btn:hover { 
+            background: #c9b037;
+            color: #1a1a1a;
+        }
+        
+        /* Footer */
+        .report-footer { 
+            margin-top: 20px;
+            padding: 25px 40px; 
+            background: white;
+            border-top: 2px solid #000;
+            page-break-inside: avoid;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        
+        .footer-left {
+            flex: 1;
+            color: #000;
+        }
+        
+        .footer-text {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #000;
+            white-space: pre-line;
+        }
+        
+        .footer-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .qr-code-container {
+            width: 150px;
+            height: 150px;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 10px;
+        }
+        
+        .qr-code-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .qr-label {
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                box-shadow: none !important;
+            }
+            
+            @page { 
+                margin: 0.3cm; 
+                size: A4 portrait;
+            }
+            
+            body { 
+                background: white; 
+                padding: 0 !important;
+                font-size: 8pt !important;
+                line-height: 1.2 !important;
+                margin: 0 !important;
+            }
+            
+            .report-container {
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                page-break-after: auto;
+            }
+            
+            /* Add padding to all children except header */
+            .report-body,
+            .case-numbers-section,
+            .statements-section,
+            .report-meta,
+            .parties-section {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+            
+            .print-btn { 
+                display: none !important; 
+            }
+            .report-letterhead {
+                page-break-after: avoid !important;
+                padding: 0 !important;
+                margin: 0 0 2px 0 !important;
+                width: 100% !important;
+                height: 90px !important;
+                overflow: hidden !important;
+            }
+            .letterhead-image {
+                width: 100% !important;
+                height: 100% !important;
+                max-height: none !important;
+                min-height: 90px !important;
+                object-fit: cover !important; /* Fill the entire width and height */
+                object-position: center center !important;
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            .no-header-placeholder {
+                padding: 8px !important;
+            }
+            .no-header-placeholder i {
+                font-size: 18px !important;
+            }
+            .no-header-placeholder p {
+                font-size: 8px !important;
+            }
+            .case-numbers-section {
+                padding: 5px 10px !important;
+                margin: 0 !important;
+                page-break-after: avoid !important;
+                page-break-before: avoid !important;
+                display: block !important;
+                visibility: visible !important;
+                background: #f8f9fa !important;
+                border-bottom: 2px solid #dee2e6 !important;
+                overflow: visible !important;
+                width: 100% !important;
+            }
+            .case-numbers-row {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+                width: 100% !important;
+            }
+            .case-numbers-left {
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
+            .case-numbers-left {
+                gap: 8px !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            .report-date {
+                text-align: right !important;
+            }
+            .case-number-item, .report-date {
+                display: block !important;
+                margin-bottom: 4px !important;
+            }
+            .case-number-item h3, .report-date h3 {
+                font-size: 8px !important;
+                margin-bottom: 2px !important;
+                color: #666 !important;
+                font-weight: 600 !important;
+            }
+            .case-number-item p, .report-date p {
+                font-size: 11px !important;
+                font-weight: 700 !important;
+                color: #000 !important;
+            }
+            .statements-section {
+                padding: 4px 10px !important;
+                margin: 0 !important;
+                page-break-after: avoid !important;
+                page-break-before: avoid !important;
+                page-break-inside: avoid !important;
+                display: block !important;
+                visibility: visible !important;
+                overflow: visible !important;
+                width: 100% !important;
+            }
+            .statement-1-2 {
+                margin-bottom: 2px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 2px !important;
+            }
+            .statement-box {
+                font-size: 8px !important;
+                margin-bottom: 0 !important;
+                line-height: 1.1 !important;
+                padding: 2px 4px !important;
+            }
+            .statement-3 {
+                font-size: 8px !important;
+                line-height: 1.1 !important;
+                padding: 2px 4px !important;
+                margin-top: 2px !important;
+            }
+            .statement-separator {
+                margin: 2px 0 !important;
+                padding: 1px 0 !important;
+                height: 1px !important;
+            }
+            .report-body {
+                padding: 4px 10px !important;
+                margin-top: 0 !important;
+            }
+            .report-meta {
+                padding: 3px !important;
+                margin-bottom: 2px !important;
+                margin-top: 0 !important;
+                page-break-inside: avoid !important;
+                page-break-after: avoid !important;
+                border: 1px solid #ddd !important;
+            }
+            .meta-title {
+                font-size: 8pt !important;
+                margin-bottom: 2px !important;
+                padding: 1px 3px !important;
+                background: #f5f5f5 !important;
+            }
+            .meta-grid {
+                gap: 1px !important;
+                grid-template-columns: repeat(3, 1fr) !important; /* 3 columns for more compact */
+                font-size: 7pt !important;
+            }
+            .meta-item {
+                margin-bottom: 0px !important;
+                padding: 1px !important;
+            }
+            .meta-label {
+                font-size: 6.5pt !important;
+                margin-bottom: 0px !important;
+                display: inline !important;
+            }
+            .meta-value {
+                font-size: 7pt !important;
+                display: inline !important;
+            }
+            /* Inline label:value format for compactness */
+            .meta-item {
+                display: block !important;
+            }
+            .description-box {
+                font-size: 7pt !important;
+                line-height: 1.1 !important;
+                padding: 3px !important;
+                margin: 1px 0 !important;
+            }
+            
+            /* COMPACT CONCLUSIONS SECTION */
+            .conclusion-card, 
+            div[style*="background: #fff9e6"],
+            div[style*="border: 3px solid #e74c3c"] {
+                padding: 3px !important;
+                margin: 2px 0 !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .conclusion-card h2,
+            .conclusion-card h4 {
+                font-size: 8pt !important;
+                margin: 1px 0 !important;
+                padding: 2px !important;
+            }
+            
+            .conclusion-card div[style*="margin-bottom"] {
+                margin-bottom: 2px !important;
+                padding-bottom: 2px !important;
+                font-size: 6.5pt !important;
+            }
+            
+            .conclusion-card div[style*="padding: 15px"] {
+                padding: 2px !important;
+                font-size: 7pt !important;
+                line-height: 1.1 !important;
+            }
+            
+            .conclusion-card div[style*="font-weight: bold"] {
+                font-size: 6.5pt !important;
+                margin-bottom: 1px !important;
+            }
+            
+            /* COMPACT PERSON CARDS FOR PRINT */
+            .person-card {
+                padding: 4px !important;
+                margin: 2px 0 !important;
+                page-break-inside: avoid !important;
+                border-width: 1px !important;
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: flex-start !important;
+                gap: 6px !important;
+            }
+            
+            /* Person photo in card */
+            .person-card .person-photo-container {
+                flex-shrink: 0 !important;
+                width: 45px !important;
+                height: 45px !important;
+                min-width: 45px !important;
+                min-height: 45px !important;
+                overflow: hidden !important;
+                border: 1px solid #ddd !important;
+                background: white !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .person-card .person-photo-container img {
+                width: 100% !important;
+                height: 100% !important;
+                min-width: 45px !important;
+                min-height: 45px !important;
+                object-fit: cover !important; /* Fill the container completely */
+                display: block !important;
+            }
+            
+            /* Person info takes remaining space */
+            .person-card .person-info {
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
+            
+            .person-card .person-name {
+                font-size: 8pt !important;
+                margin: 0 0 2px 0 !important;
+                font-weight: bold !important;
+            }
+            
+            .person-card .person-details-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 2px !important;
+                font-size: 6.5pt !important;
+            }
+            
+            .person-card .info-pair {
+                margin: 0 !important;
+                padding: 1px !important;
+            }
+            
+            .person-card .info-label {
+                font-size: 6pt !important;
+                font-weight: bold !important;
+            }
+            
+            .person-card .info-value {
+                font-size: 6.5pt !important;
+            }
+            
+            .person-card .person-statement {
+                font-size: 6.5pt !important;
+                line-height: 1.1 !important;
+                margin-top: 2px !important;
+                padding: 2px !important;
+                max-height: 30px !important;
+                overflow: hidden !important;
+            }
+            
+            /* Witness photos side-by-side with info */
+            div[style*="display: flex"][style*="gap: 15px"] {
+                gap: 4px !important;
+            }
+            
+            div[style*="width: 80px"][style*="height: 80px"],
+            div[style*="width: 80px"][style*="height: 80px"] img {
+                width: 45px !important;
+                height: 45px !important;
+                min-width: 45px !important;
+                min-height: 45px !important;
+                max-width: 45px !important;
+                max-height: 45px !important;
+                object-fit: cover !important; /* Fill the container completely */
+                border-radius: 0 !important; /* Square photos */
+                border: 1px solid #ddd !important;
+            }
+            
+            /* Add page numbers */
+            @page {
+                margin: 0.3cm;
+                @bottom-right {
+                    content: "Page " counter(page) " of " counter(pages);
+                    font-size: 8pt;
+                    color: #666;
+                }
+            }
+            
+            /* Alternative page counter in footer */
+            body::after {
+                content: "";
+                display: block;
+                position: fixed;
+                bottom: 0.2cm;
+                right: 0.5cm;
+                font-size: 8pt;
+                color: #666;
+            }
+            
+            .person-header-section {
+                padding: 4px !important;
+                margin: -5px -5px 4px -5px !important;
+            }
+            
+            .person-photo-container img,
+            .person-photo {
+                width: 45px !important;
+                height: 45px !important;
+                min-width: 45px !important;
+                min-height: 45px !important;
+                max-width: 45px !important;
+                max-height: 45px !important;
+                object-fit: cover !important; /* Fill the container completely */
+                border-radius: 0 !important; /* Square photos, not circles */
+                border: 1px solid #ddd !important;
+                background: white !important;
+            }
+            
+            /* Person header with horizontal layout */
+            .person-header-section {
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+            }
+            
+            .person-name-title {
+                font-size: 12pt !important;
+            }
+            
+            .person-details-grid {
+                gap: 6px !important;
+            }
+            
+            .person-statement {
+                padding: 8px !important;
+                margin: 8px 0 !important;
+            }
+            
+            .statement-label {
+                font-size: 9pt !important;
+                margin-bottom: 5px !important;
+            }
+            
+            .statement-text {
+                font-size: 8.5pt !important;
+                line-height: 1.3 !important;
+            }
+            
+            /* OPTIMIZE MEDIA FOR PRINT - HORIZONTAL LAYOUT */
+            img {
+                max-height: 100px !important;
+                max-width: 120px !important;
+                page-break-inside: avoid !important;
+                float: left !important;
+                margin: 4px 8px 4px 0 !important;
+                object-fit: contain !important; /* Show full image without cropping */
+                width: auto !important;
+                height: auto !important;
+            }
+            
+            /* Evidence containers with horizontal layout */
+            .evidence-item,
+            div[style*="evidence"],
+            div[style*="text-align: center"] {
+                display: flex !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+                padding: 4px !important;
+                margin: 4px 0 !important;
+                page-break-inside: avoid !important;
+            }
+            
+            /* Image containers should not center in print */
+            div[style*="text-align: center"] {
+                text-align: left !important;
+            }
+            
+            /* Make evidence content wrap around images */
+            .evidence-item > div,
+            div[style*="margin-top: 15px"] > div {
+                flex: 1 !important;
+                overflow: hidden !important;
+            }
+            
+            video {
+                max-height: 100px !important;
+                display: none !important; /* Hide video players in print */
+            }
+            
+            audio {
+                display: none !important; /* Hide audio players in print */
+            }
+            
+            iframe {
+                display: none !important; /* Hide iframes (PDFs) in print - they don't render */
+            }
+            
+            /* Show message for PDF documents in print */
+            iframe + p {
+                display: block !important;
+                padding: 10px !important;
+                background: #fff3cd !important;
+                border-top: 2px dashed #ffc107 !important;
+                text-align: center !important;
+                color: #856404 !important;
+                font-size: 9pt !important;
+            }
+            
+            /* COMPACT SECTIONS */
+            .section-header {
+                font-size: 10pt !important;
+                padding: 6px 10px !important;
+                margin: 6px 0 4px 0 !important;
+                page-break-after: avoid !important;
+                page-break-before: auto !important;
+            }
+            
+            .report-section {
+                padding: 4px !important;
+                margin: 4px 0 !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .section-body {
+                padding: 4px !important;
+            }
+            
+            .section-icon {
+                display: none !important; /* Hide icons to save space */
+            }
+            
+            /* STRATEGIC PAGE BREAKS */
+            .section-header:first-of-type {
+                page-break-before: avoid !important;
+            }
+            
+            /* Tables */
+            table {
+                font-size: 8.5pt !important;
+            }
+            
+            td, th {
+                padding: 3px !important;
+            }
+            .meta-label {
+                font-size: 8pt;
+            }
+            .meta-value {
+                font-size: 9pt;
+            }
+            .report-section { 
+                page-break-inside: avoid;
+                margin-bottom: 12px;
+            }
+            .section-header {
+                font-size: 10pt;
+                margin-bottom: 8px;
+                padding-bottom: 4px;
+            }
+            .description-box {
+                padding: 10px 15px;
+                font-size: 9pt;
+                line-height: 1.4;
+            }
+            .person-card {
+                margin-bottom: 10px;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+            .person-row {
+                padding: 10px;
+                gap: 12px;
+            }
+            .person-photo-wrapper {
+                width: 60px;
+                height: 75px;
+            }
+            .person-name {
+                font-size: 10pt;
+                margin-bottom: 6px;
+            }
+            .person-details-grid {
+                gap: 6px;
+            }
+            .info-label {
+                font-size: 7pt;
+            }
+            .info-value {
+                font-size: 8pt;
+            }
+            .person-statement {
+                padding: 8px 10px;
+            }
+            .statement-label {
+                font-size: 7pt;
+            }
+            .statement-text {
+                font-size: 8pt;
+                line-height: 1.4;
+            }
+            table {
+                margin-bottom: 10px;
+            }
+            table th {
+                padding: 6px 8px;
+                font-size: 8pt;
+            }
+            table td {
+                padding: 6px 8px;
+                font-size: 8pt;
+            }
+            .report-footer {
+                margin-top: 15px;
+                padding: 15px 20px;
+                border-top: 2px solid #000;
+                page-break-inside: avoid;
+            }
+            .footer-content {
+                gap: 20px;
+            }
+            .footer-text {
+                font-size: 9pt;
+                line-height: 1.5;
+            }
+            .qr-code-container {
+                width: 100px;
+                height: 100px;
+                padding: 5px;
+            }
+            .qr-label {
+                font-size: 7pt;
+            }
+        }
+    </style>
+
+    <script>
+        // Generate QR code when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            const qrContainer = document.getElementById('qrCode');
+            if (qrContainer && typeof QRCode !== 'undefined') {
+                // Get current page URL as the QR code target
+                const reportUrl = window.location.href;
+                
+                // Clear container
+                qrContainer.innerHTML = '';
+                
+                // Generate QR code pointing to this HTML file
+                new QRCode(qrContainer, {
+                    text: reportUrl,
+                    width: 120,
+                    height: 120,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                console.log('QR Code generated for report URL:', reportUrl);
+            } else {
+                console.warn('QR Code library not loaded or container not found');
+            }
+        });
+    </script>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">DAABAC WARBIXINTA</button>
+    
+    <div class="report-container">
+        <!-- Professional Letterhead -->
+        <div class="report-letterhead">
+            <img src="/uploads/reports/headers/report_header_1768511275.png" alt="Report Header" class="letterhead-image" />
+        </div>
+        
+        <!-- Case Numbers and Date -->
+        <div class="case-numbers-section">
+            <div class="case-numbers-row">
+                <div class="case-numbers-left">
+                    <div class="case-number-item">
+                        <h3>Lambarka Kiiska</h3>
+                        <p>CASE/XGD-01/2026/0001</p>
+                    </div>
+                    <div class="case-number-item">
+                        <h3>Lambarka OB</h3>
+                        <p>OB/XGD-01/2026/0001</p>
+                    </div>
+                </div>
+                <div class="report-date">
+                    <h3>Taariikhda Warbixinta</h3>
+                    <p>Jan 21, 2026, 12:38 AM</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statements Section -->
+        <div class="statements-section">
+            
+                <div class="statement-1-2">
+                    <div class="statement-box">Ku: Xafiiska XeerIlaaliyaha_Guud ee Dawladda jubaland = kismaayo<br></div>
+                    <div class="statement-box">Og: Taliyaha Qeybta Boliiska Gobolka Jubbada Hoose = kismaayo</div>
+                </div>
+            
+            
+                <div class="statement-separator">
+                    <div class="statement-3">Ujeedo: Taar</div>
+                </div>
+            
+        </div>
+        
+        <div class="report-body">
+        
+        <!-- Case Information -->
+        <div class="report-meta">
+            <div class="meta-title">Macluumaadka Kiiska</div>
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <span class="meta-label">Xaaladda</span>
+                    <span class="meta-value">CLOSED</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Muhiimadda</span>
+                    <span class="meta-value">MEDIUM</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Nooca Dembiga</span>
+                    <span class="meta-value">property</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Qaybta Dembiga</span>
+                    <span class="meta-value">Tuugnimo</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Taariikhda Dhacdada</span>
+                    <span class="meta-value">Jan 2, 2026, 07:54 PM</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Goobta</span>
+                    <span class="meta-value">suuqa yare kismayo</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Abuuray</span>
+                    <span class="meta-value">abdullahi siciid abdullahi</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">La Abuuray</span>
+                    <span class="meta-value">Jan 12, 2026, 02:55 PM</span>
+                </div>
+                
+                <div class="meta-item" style="grid-column: 1 / -1;">
+                    <span class="meta-label">Xaaladda Maxkamadda</span>
+                    <span class="meta-value">COURT CLOSED</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Case Description -->
+        <div class="report-section">
+            <h2 class="section-header">
+                <span class="section-icon"></span>
+                SHARAXAADA DHACDADA
+            </h2>
+            <div class="section-body">
+                <div class="description-box">
+                    ninkaan ayaa wuxuu usoo dhacay dukaan  suuq yare ku yaalo isaga oo lagu eedeeye dhac
+                </div>
+            </div>
+        </div>
+        
+        <!-- Parties -->
+        
+            <div class="report-section">
+                <h2 class="section-header">
+                    <span class="section-icon accused-icon"></span>
+                    Qof(yada) La Eedaynayo
+                </h2>
+                <div class="section-body">
+                    
+        <div class="person-card">
+            <div class="person-row">
+                <div class="person-photo-wrapper">
+                    <img src="http://localhost:8080/uploads/persons/1768229738_6eaf0750843d98ba93c8.png" alt="geyle  farax  noor" class="person-photo" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="photo-placeholder-fallback" style="display:none;">G</div>
+                </div>
+                <div class="person-info">
+                    <h4 class="person-name">geyle  farax  noor</h4>
+                    <div class="person-details-grid">
+                        <div class="info-pair">
+                            <span class="info-label">Lambarka Aqoonsiga:</span>
+                            <span class="info-value">88383</span>
+                        </div>
+                        <div class="info-pair">
+                            <span class="info-label">Jinsiga:</span>
+                            <span class="info-value">male</span>
+                        </div>
+                        
+                        <div class="info-pair">
+                            <span class="info-label">Telefoonka:</span>
+                            <span class="info-value">0614112537</span>
+                        </div>
+                        
+                        <div class="info-pair">
+                            <span class="info-label">Ciwaanka:</span>
+                            <span class="info-value">siinaay</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </div>
+        
+                </div>
+            </div>
+        
+        
+            <div class="report-section">
+                <h2 class="section-header">
+                    <span class="section-icon victim-icon"></span>
+                    Dacwoodayaasha / Dhibbanayaasha
+                </h2>
+                <div class="section-body">
+                    
+        <div class="person-card">
+            <div class="person-row">
+                <div class="person-photo-wrapper">
+                    <img src="http://localhost:8080/uploads/persons/1768229738_8683938a2e96201e5ec2.jpeg" alt="cabdifatax  hussein abdi" class="person-photo" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="photo-placeholder-fallback" style="display:none;">C</div>
+                </div>
+                <div class="person-info">
+                    <h4 class="person-name">cabdifatax  hussein abdi</h4>
+                    <div class="person-details-grid">
+                        <div class="info-pair">
+                            <span class="info-label">Lambarka Aqoonsiga:</span>
+                            <span class="info-value">383883</span>
+                        </div>
+                        <div class="info-pair">
+                            <span class="info-label">Jinsiga:</span>
+                            <span class="info-value">male</span>
+                        </div>
+                        
+                        <div class="info-pair">
+                            <span class="info-label">Telefoonka:</span>
+                            <span class="info-value">061500000</span>
+                        </div>
+                        
+                        <div class="info-pair">
+                            <span class="info-label">Ciwaanka:</span>
+                            <span class="info-value">shaqaalaha</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </div>
+        
+                </div>
+            </div>
+        
+        
+        <!-- Investigators -->
+        
+        <div class="report-section">
+            <h2 class="section-header">
+                <span class="section-icon"></span>
+                Baarayaasha Loo Xilsaaray
+            </h2>
+            <div class="section-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Magaca</th>
+                            <th>Doorka</th>
+                            <th>Taariikhda Xilsaarista</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td>kazaama baare</td>
+                            <td>Baaraha Hogaamiya</td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>kazaama baare</td>
+                            <td>Baaraha Hogaamiya</td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Court Assignment -->
+        
+        
+        
+        </div>
+        
+        <!-- Footer -->
+        <div class="report-footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    
+                        <div class="footer-text">T/Xigeenka Saldhiga Dhexe Ee Degmada Kismaayo<br>Dhamme C/Xakiin Yuusuf Ibraahim : ________________________________________<br></div>
+                    
+                </div>
+                <div class="footer-right">
+                    <div class="qr-code-container" id="qrCode">
+                        <!-- QR Code will be generated here -->
+                    </div>
+                    <div class="qr-label">Sawir Macluumaadka Kiiska</div>
+                    <div style="font-size: 10px; text-align: center; margin-top: 5px; color: #666;">
+                        Verification Code: N/A
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+    

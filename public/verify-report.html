@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Case Report - PCMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header i {
+            font-size: 64px;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #111827;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+        
+        .verification-result {
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .verification-result.success {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+        }
+        
+        .verification-result.error {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+        }
+        
+        .verification-result.loading {
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+        }
+        
+        .verification-result i {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .verification-result.success i {
+            color: #10b981;
+        }
+        
+        .verification-result.error i {
+            color: #ef4444;
+        }
+        
+        .verification-result.loading i {
+            color: #3b82f6;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .verification-result h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .verification-result.success h2 {
+            color: #059669;
+        }
+        
+        .verification-result.error h2 {
+            color: #dc2626;
+        }
+        
+        .verification-result.loading h2 {
+            color: #2563eb;
+        }
+        
+        .case-details {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .case-details .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .case-details .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .case-details .label {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .case-details .value {
+            color: #6b7280;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <i class="fas fa-shield-alt"></i>
+            <h1>Verify Case Report</h1>
+            <p>Authentication and Verification System</p>
+        </div>
+        
+        <div id="verificationResult" class="verification-result loading">
+            <i class="fas fa-spinner"></i>
+            <h2>Verifying Report...</h2>
+            <p>Please wait while we verify the authenticity of this report.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const caseNumber = urlParams.get('case');
+        const verificationCode = urlParams.get('code');
+        
+        // Verify report
+        async function verifyReport() {
+            const resultDiv = document.getElementById('verificationResult');
+            
+            if (!caseNumber || !verificationCode) {
+                resultDiv.className = 'verification-result error';
+                resultDiv.innerHTML = `
+                    <i class="fas fa-times-circle"></i>
+                    <h2>Invalid Verification Link</h2>
+                    <p>The verification link is incomplete or invalid.</p>
+                `;
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${window.location.origin}/api/cases/verify?case=${encodeURIComponent(caseNumber)}&code=${encodeURIComponent(verificationCode)}`);
+                const result = await response.json();
+                
+                if (result.status === 'success' && result.data) {
+                    const caseData = result.data;
+                    resultDiv.className = 'verification-result success';
+                    resultDiv.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <h2>Report Verified ✓</h2>
+                        <p>This is an authentic case report from the Police Case Management System.</p>
+                        
+                        <div class="case-details">
+                            <div class="detail-row">
+                                <span class="label">Case Number:</span>
+                                <span class="value">${caseData.case_number}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">OB Number:</span>
+                                <span class="value">${caseData.ob_number}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Status:</span>
+                                <span class="value">${caseData.status}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Created:</span>
+                                <span class="value">${new Date(caseData.created_at).toLocaleDateString()}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Verified:</span>
+                                <span class="value">${new Date().toLocaleString()}</span>
+                            </div>
+                        </div>
+                        
+                        <a href="dashboard.html" class="btn">Back to Dashboard</a>
+                    `;
+                } else {
+                    resultDiv.className = 'verification-result error';
+                    resultDiv.innerHTML = `
+                        <i class="fas fa-times-circle"></i>
+                        <h2>Verification Failed</h2>
+                        <p>${result.message || 'Unable to verify this report. It may be invalid or tampered with.'}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                resultDiv.className = 'verification-result error';
+                resultDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>Verification Error</h2>
+                    <p>An error occurred while verifying the report. Please try again later.</p>
+                `;
+            }
+        }
+        
+        // Verify on page load
+        verifyReport();
+    </script>
+</body>
+</html>

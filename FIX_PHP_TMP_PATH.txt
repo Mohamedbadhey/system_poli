@@ -1,0 +1,48 @@
+====================================
+FIX: PHP Temp Directory Error
+====================================
+
+ERROR: finfo_file(C:\xamppp\tmp\php6463.tmp): Failed to open stream
+
+PROBLEM: Your php.ini has the wrong path (xamppp with 3 p's instead of xampp with 2 p's)
+
+SOLUTION:
+
+1. Open: C:\xampp\php\php.ini
+
+2. Search for: upload_tmp_dir
+
+3. Change FROM:
+   upload_tmp_dir = "C:\xamppp\tmp"
+   
+   TO:
+   upload_tmp_dir = "C:\xampp\tmp"
+   
+   (Remove the extra 'p')
+
+4. Also search for: sys_temp_dir
+   
+   If it exists, change:
+   sys_temp_dir = "C:\xamppp\tmp"
+   
+   TO:
+   sys_temp_dir = "C:\xampp\tmp"
+
+5. Save the file
+
+6. Restart Apache in XAMPP Control Panel
+
+7. Try uploading again
+
+====================================
+ALTERNATIVE WORKAROUND:
+====================================
+
+If you don't want to edit php.ini, create the directory:
+
+1. Create folder: C:\xamppp\tmp
+   (with 3 p's to match your config)
+
+2. Restart Apache
+
+3. Try uploading again

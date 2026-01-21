@@ -1,0 +1,260 @@
+/* ============================================
+   Pending Cases DataTable Styles
+   ============================================ */
+
+/* DataTable Container */
+.dataTables_wrapper {
+    padding: 0;
+}
+
+/* DataTable Search and Length */
+.dataTables_filter {
+    float: right;
+    margin-bottom: 15px;
+}
+
+.dataTables_filter input {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    margin-left: 8px;
+    width: 250px;
+    font-size: 14px;
+}
+
+.dataTables_filter input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.dataTables_length {
+    float: left;
+    margin-bottom: 15px;
+}
+
+.dataTables_length select {
+    padding: 6px 30px 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    margin: 0 8px;
+    font-size: 14px;
+    background: white url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M0%200l5%205%205-5z%22%20fill%3D%22%23666%22%2F%3E%3C%2Fsvg%3E') no-repeat right 10px center;
+    background-size: 10px;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* DataTable Header */
+#pendingCasesTable thead th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 12px;
+    font-weight: 600;
+    text-align: left;
+    border: none;
+    white-space: nowrap;
+}
+
+#pendingCasesTable thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+#pendingCasesTable thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* DataTable Body */
+#pendingCasesTable tbody td {
+    padding: 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+#pendingCasesTable tbody tr {
+    transition: background-color 0.2s;
+}
+
+#pendingCasesTable tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Sorting Icons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 6px 12px;
+    margin: 0 2px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #111827;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* DataTable Info */
+.dataTables_info {
+    padding-top: 15px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.dataTables_paginate {
+    padding-top: 15px;
+    float: right;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.action-buttons .btn {
+    padding: 6px 10px;
+    font-size: 14px;
+    min-width: auto;
+}
+
+/* Category Badges */
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.badge-danger {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.badge-warning {
+    background: #fef3c7;
+    color: #f59e0b;
+}
+
+.badge-info {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.badge-primary {
+    background: #e0e7ff;
+    color: #667eea;
+}
+
+.badge-secondary {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Table Responsive */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Card Actions */
+.card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Loading State */
+.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Empty State */
+.dataTables_empty {
+    padding: 40px !important;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 16px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .dataTables_filter,
+    .dataTables_length {
+        float: none;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+    
+    .dataTables_filter input {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+    
+    .dataTables_info,
+    .dataTables_paginate {
+        float: none;
+        text-align: center;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+/* Sorting Arrows */
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:before {
+    right: 1em;
+    content: "↑";
+    opacity: 0.3;
+}
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after {
+    right: 0.5em;
+    content: "↓";
+    opacity: 0.3;
+}
+
+table.dataTable thead .sorting_asc:before {
+    opacity: 1;
+}
+
+table.dataTable thead .sorting_desc:after {
+    opacity: 1;
+}

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Medical Form - PCMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #667eea;
+        }
+
+        .loading i {
+            font-size: 48px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            text-align: center;
+            padding: 60px 20px;
+            color: #ef4444;
+        }
+
+        .error i {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success i {
+            font-size: 64px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+
+        .form-details {
+            background: #f9fafb;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .detail-value {
+            color: #111827;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+        }
+
+        .verification-code {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            letter-spacing: 2px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .header, .actions {
+                display: none;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-notes-medical"></i> Medical Form Verification</h1>
+            <p>Police Case Management System</p>
+        </div>
+
+        <div class="content" id="contentArea">
+            <div class="loading">
+                <i class="fas fa-spinner"></i>
+                <p style="margin-top: 20px;">Verifying medical form...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get verification code from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const verificationCode = urlParams.get('code');
+
+        if (!verificationCode) {
+            showError('No verification code provided');
+        } else {
+            verifyForm(verificationCode);
+        }
+
+        async function verifyForm(code) {
+            const baseUrl = window.location.origin;
+            
+            try {
+                const response = await fetch(`${baseUrl}/verify-medical-form?code=${code}`);
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    displayForm(result.data);
+                } else {
+                    showError(result.message || 'Medical form not found');
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                showError('Error connecting to server');
+            }
+        }
+
+        function displayForm(form) {
+            const contentArea = document.getElementById('contentArea');
+            
+            // Parse form data
+            let formData = {};
+            try {
+                formData = JSON.parse(form.form_data);
+            } catch (e) {
+                console.error('Error parsing form data:', e);
+            }
+
+            const html = `
+                <div class="success">
+                    <i class="fas fa-check-circle"></i>
+                    <h2>Medical Form Verified ✓</h2>
+                    <p style="color: #6b7280; margin-top: 10px;">This is an authentic medical examination form</p>
+                </div>
+
+                <div class="verification-code">
+                    ${form.verification_code}
+                </div>
+
+                <div class="form-details">
+                    <h3 style="margin-bottom: 20px; color: #111827;">Form Details</h3>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Form ID:</div>
+                        <div class="detail-value">#${form.id}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Case Number:</div>
+                        <div class="detail-value"><strong>${form.case_number || 'N/A'}</strong></div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Patient Name:</div>
+                        <div class="detail-value">${form.patient_name}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Hospital:</div>
+                        <div class="detail-value">${form.hospital_name || 'N/A'}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Examination Date:</div>
+                        <div class="detail-value">${form.examination_date ? new Date(form.examination_date).toLocaleDateString() : 'N/A'}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Report Date:</div>
+                        <div class="detail-value">${form.report_date ? new Date(form.report_date).toLocaleDateString() : 'N/A'}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Status:</div>
+                        <div class="detail-value">
+                            <span class="badge badge-success">
+                                <i class="fas fa-check"></i> Verified
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Created:</div>
+                        <div class="detail-value">${new Date(form.created_at).toLocaleString()}</div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="printMedicalForm()">
+                        <i class="fas fa-print"></i> Print Full Form
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/'">
+                        <i class="fas fa-home"></i> Go to Homepage
+                    </button>
+                </div>
+            `;
+
+            contentArea.innerHTML = html;
+        }
+
+        function showError(message) {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = `
+                <div class="error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>Verification Failed</h2>
+                    <p style="margin-top: 15px;">${message}</p>
+                    <button class="btn btn-primary" onclick="window.location.href='/'" style="margin-top: 30px;">
+                        <i class="fas fa-home"></i> Go to Homepage
+                    </button>
+                </div>
+            `;
+        }
+
+        function printMedicalForm() {
+            // Redirect to the actual medical form page with the form ID in view mode
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            // Extract form ID from verification code (MED-00000024-XXXXXX)
+            const match = code.match(/MED-(\d+)-/);
+            if (match) {
+                const formId = parseInt(match[1]);
+                // Open form in view/print mode
+                window.open(`/public/assets/pages/medical-examination-report.html?view=${formId}`, '_blank');
+            } else {
+                alert('Unable to open form for printing');
+            }
+        }
+    </script>
+</body>
+</html>

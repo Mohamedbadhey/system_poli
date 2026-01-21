@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PCMS</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <!-- Bootstrap CSS (needed for dashboard cards) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/case-details-modal.css">
+    <link rel="stylesheet" href="assets/css/categories.css">
+    <link rel="stylesheet" href="assets/css/case-conclusion.css">
+    <link rel="stylesheet" href="assets/css/language.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="assets/css/pending-cases.css">
+    <link rel="stylesheet" href="assets/css/case-tracking-dashboard.css">
+    <link rel="stylesheet" href="assets/css/daily-operations.css">
+    <link rel="stylesheet" href="assets/css/investigator-dashboard.css?v=1737453367">
+</head>
+<body>
+    <div class="main-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="assets/images/logo.png" alt="Police Logo" class="sidebar-logo">
+                    <span>PCMS</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Navigation will be dynamically loaded based on user role -->
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle" data-i18n="dashboard">Dashboard</h1>
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search cases, persons..." id="globalSearch">
+                    </div>
+                    
+                    <div class="notification-dropdown">
+                        <button class="icon-btn" id="notificationBtn">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge" id="notificationBadge">0</span>
+                        </button>
+                        <div class="dropdown-menu" id="notificationDropdown">
+                            <div class="dropdown-header" data-i18n="notifications">Notifications</div>
+                            <div class="notification-list" id="notificationList">
+                                <!-- Notifications loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="language-dropdown">
+                        <button class="icon-btn" id="languageBtn" onclick="toggleLanguageMenu()">
+                            <span class="flag">🇬🇧</span> EN
+                        </button>
+                        <div class="dropdown-menu" id="languageDropdown" style="display: none;">
+                            <div class="dropdown-header" data-i18n="select_language">Select Language</div>
+                            <a href="#" class="dropdown-item" onclick="changeLanguage('en'); return false;">
+                                <span class="flag">🇬🇧</span> English
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="changeLanguage('so'); return false;">
+                                <span class="flag">🇸🇴</span> Soomaali
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="user-dropdown">
+                        <button class="user-btn" id="userBtn">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userName">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <a href="#" class="dropdown-item" onclick="changePassword()">
+                                <i class="fas fa-key"></i> <span data-i18n="change_password">Change Password</span>
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Page Content -->
+            <main class="page-content" id="pageContent">
+                <!-- Content loaded dynamically -->
+            </main>
+        </div>
+    </div>
+    
+    <!-- Modal Container -->
+    <div id="modalContainer"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="assets/js/config.js?v=1768584526"></script>
+    <script src="assets/js/sweetalert-helper.js?v=1768584526"></script>
+    <script src="assets/js/api.js?v=1768584526"></script>
+    <script src="assets/js/language.js?v=1768584526"></script>
+    <script src="assets/js/translation-helper.js?v=1768584526"></script>
+    <script src="assets/js/auth.js?v=1768584526"></script>
+    <script src="assets/js/modals.js?v=1768584526"></script>
+    <script src="assets/js/app.js?v=1768584526"></script>
+    <script src="assets/js/investigator-assignment.js?v=1768584526"></script>
+    <script src="assets/js/case-details-modal.js?v=1768915189"></script>
+    <script src="assets/js/case-conclusion.js?v=1768584526"></script>
+    <script src="assets/js/case-report.js?v=1768584526"></script>
+    <script src="assets/js/custom-report.js?v=1768584526"></script>
+    <script src="assets/js/evidence-edit.js?v=1768584526"></script>
+    <script src="assets/js/categories.js?v=20260118094638"></script>
+    <script src="assets/js/admin-reports.js?v=1768584526"></script>
+    <script src="assets/js/reports-dashboard.js?v=1768584526"></script>
+    <script src="assets/js/case-reports-analytics.js?v=1768584526"></script>
+    <script src="assets/js/court-workflow.js?v=1768915189"></script>
+    <script src="assets/js/court-dashboard.js?v=1768584526"></script>
+    <script src="assets/js/court-cases.js?v=1768584526"></script>
+    <script src="assets/js/toast-helper.js?v=1768584526"></script>
+    <script src="assets/js/reports-management.js?v=1768584526"></script>
+    <script src="assets/js/case-reports-page.js?v=1768584526"></script>
+    <script src="assets/js/solved-cases.js?v=1768584526"></script>
+    <script src="assets/js/incident-entry.js?v=1768584526"></script>
+    <script src="assets/js/pending-cases.js?v=1768584526"></script>
+    <script src="assets/js/case-tracking-dashboard.js?v=1768584526"></script>
+    <script src="assets/js/daily-operations.js?v=1768584526"></script>
+    <script src="assets/js/dashboard.js?v=1768584526"></script>
+    <script src="assets/js/investigator-dashboard.js?v=1737453367"></script>
+</body>
+</html>
+

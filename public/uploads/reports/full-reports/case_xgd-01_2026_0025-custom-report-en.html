@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customized Report - CASE/XGD-01/2026/0025</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @page { margin: 1cm; size: A4 portrait; }
+        body { font-family: Arial, sans-serif; font-size: 10pt; line-height: 1.6; color: #333; }
+        
+        .print-btn { display: block; }
+        @media print {
+            .print-btn { display: none !important; }
+        }
+        
+        .report-letterhead {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        
+        .letterhead-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 200px;
+        }
+        
+        .case-numbers-section { 
+            background: white;
+            padding: 12px 40px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .case-numbers-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .case-numbers-left {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .case-number-item h3, .report-date h3 {
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 3px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .case-number-item p, .report-date p {
+            font-size: 14px;
+            color: #000;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .statements-section {
+            background: white;
+            padding: 15px 40px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .statement-1-2 {
+            margin-bottom: 15px;
+        }
+        
+        .statement-box {
+            margin-bottom: 3px;
+            line-height: 1.4;
+            color: #000;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        
+        .statement-separator {
+            margin: 15px 0 0 0;
+            padding: 12px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .statement-3 {
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.4;
+            color: #000;
+            font-weight: 700;
+        }
+        
+        .report-content {
+            padding: 20px 40px;
+        }
+        
+        /* Person Photo Styles - Same as Full Report */
+        .person-photo { 
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+            border: 3px solid white; 
+            object-fit: cover; 
+            background: white; 
+        }
+        
+        /* Person Card Styles - Same as Full Report */
+        .person-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+        
+        .person-card h3 {
+            color: #2c3e50;
+            font-size: 14pt;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .person-card h4 {
+            color: #34495e;
+            font-size: 12pt;
+            margin: 15px 0 10px 0;
+        }
+        
+        .person-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .person-card ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .person-card ul li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Section Styles */
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            font-size: 16pt;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            font-weight: bold;
+        }
+        
+        .section h3 {
+            color: #34495e;
+            font-size: 13pt;
+            margin: 20px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        .info-table, .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        .info-table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .info-table td:first-child {
+            width: 200px;
+            font-weight: bold;
+        }
+        
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .timeline-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 3px solid #3498db;
+        }
+        
+        /* QR Code Styles */
+        .qr-code-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+        
+        .qr-code-container canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+        
+        .qr-code-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        @media print {
+            .report-letterhead {
+                width: 100% !important;
+                margin: 0 0 5px 0 !important;
+            }
+            .letterhead-image {
+                width: 100% !important;
+                object-fit: cover !important;
+            }
+            .case-numbers-section {
+                padding: 5px 10px !important;
+            }
+            .statements-section {
+                padding: 4px 10px !important;
+            }
+            .statement-box, .statement-3 {
+                font-size: 8px !important;
+            }
+            .person-photo { 
+                width: 60px !important; 
+                height: 60px !important; 
+            }
+            .qr-code-container {
+                width: 100px !important;
+                height: 100px !important;
+            }
+        }
+    </style>
+
+    <script>
+        // Generate QR code when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            const qrContainer = document.getElementById('qrCode');
+            if (qrContainer && typeof QRCode !== 'undefined') {
+                // Get current page URL as the QR code target
+                const reportUrl = window.location.href;
+                
+                // Clear container
+                qrContainer.innerHTML = '';
+                
+                // Generate QR code pointing to this HTML file
+                new QRCode(qrContainer, {
+                    text: reportUrl,
+                    width: 120,
+                    height: 120,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                console.log('QR Code generated for report URL:', reportUrl);
+            } else {
+                console.warn('QR Code library not loaded or container not found');
+            }
+        });
+    </script>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()" style="position: fixed; top: 20px; right: 20px; padding: 12px 24px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+        <i class="fas fa-print"></i> Print Report
+    </button>
+    
+    <div class="report-container" style="max-width: 210mm; margin: 20px auto; background: white; box-shadow: 0 0 30px rgba(0,0,0,0.1); padding: 40px;">
+        
+        <!-- REPORT HEADER -->
+        <div class="report-letterhead">
+            <img src="/uploads/reports/headers/report_header_1768511275.png" alt="Report Header" class="letterhead-image" />
+        </div>
+        
+        <!-- Case Numbers and Date -->
+        <div class="case-numbers-section">
+            <div class="case-numbers-row">
+                <div class="case-numbers-left">
+                    <div class="case-number-item">
+                        <h3>Lambarka Kiiska</h3>
+                        <p>CASE/XGD-01/2026/0025</p>
+                    </div>
+                    <div class="case-number-item">
+                        <h3>Lambarka OB</h3>
+                        <p>OB/XGD-01/2026/0025</p>
+                    </div>
+                </div>
+                <div class="report-date">
+                    <h3>Taariikhda Warbixinta</h3>
+                    <p>Jan 21, 2026, 01:22 AM</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statements Section -->
+        <div class="statements-section">
+            
+                <div class="statement-1-2">
+                    <div class="statement-box">Ku: Xafiiska XeerIlaaliyaha_Guud ee Dawladda jubaland = kismaayo<br></div>
+                    <div class="statement-box">Og: Taliyaha Qeybta Boliiska Gobolka Jubbada Hoose = kismaayo</div>
+                </div>
+            
+            
+                <div class="statement-separator">
+                    <div class="statement-3">Ujeedo: customized</div>
+                </div>
+            
+        </div>
+
+        <!-- Selected Sections -->
+    
+        <div style="background: linear-gradient(to right, #e8f4f8 0%, #ffffff 100%); padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 3px solid #3498db; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
+            <h2 style="color: #ffffff; margin-bottom: 15px; font-size: 14pt; padding: 10px 15px; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); border-radius: 5px; border-left: 5px solid #2471a3;">?? CASE OVERVIEW</h2>
+            <table class="info-table" style="margin-top: 15px;">
+                <tr><td>Crime Type:</td><td>tumasho</td></tr>
+                <tr><td>undefined:</td><td>waaxda Dilalka</td></tr>
+                <tr><td>Incident Date:</td><td>Dec 15, 2025</td></tr>
+                <tr><td>Location:</td><td>xsdfsd</td></tr>
+                <tr><td>Status:</td><td><span style="background: #3498db; color: white; padding: 4px 12px; border-radius: 4px; font-size: 10pt; font-weight: bold;">ASSIGNED</span></td></tr>
+                <tr><td>Priority:</td><td><span style="background: #f39c12; color: white; padding: 4px 12px; border-radius: 4px; font-size: 10pt; font-weight: bold;">MEDIUM</span></td></tr>
+            </table>
+            <div style="margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #3498db; border-radius: 4px;">
+                <div style="font-weight: 700; color: #2c3e50; margin-bottom: 8px; font-size: 10pt;">?? Incident Description:</div>
+                <div style="color: #333; line-height: 1.6;">sdfgsdgsdfgdf</div>
+            </div>
+        </div>
+    <h2 class="section-header" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); page-break-before: always; page-break-after: avoid;">?? SECTION 1: ACCUSED PERSONS</h2>
+        <div class="person-file" style="page-break-inside: avoid; border: 3px solid #e74c3c; box-shadow: 0 2px 6px rgba(231,76,60,0.2);">
+            <!-- Photo and Basic Info Section at Top -->
+            <div style="background: #e74c3c; padding: 8px 12px; border-bottom: 3px solid #c0392b; display: flex; gap: 12px; align-items: center;">
+                <!-- Info on Left -->
+                <div style="flex: 1;">
+                    <div style="color: white; font-size: 12pt; font-weight: bold; margin-bottom: 6px;">?? undefined #1: mohamed  hussein dhalahow</div>
+                    <div style="background: white; padding: 6px; border: 2px solid #c0392b; border-radius: 3px;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 8.5pt;">
+                            <tr>
+                                <td style="padding: 2px 6px; width: 18%; font-weight: 600; color: #555;">ID:</td>
+                                <td style="padding: 2px 6px; width: 32%; border-right: 1px solid #ddd;">88383</td>
+                                <td style="padding: 2px 6px; width: 18%; font-weight: 600; color: #555;">Gender:</td>
+                                <td style="padding: 2px 6px; width: 32%;">female</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px 6px; font-weight: 600; color: #555;">DOB:</td>
+                                <td style="padding: 2px 6px; border-right: 1px solid #ddd;">N/A</td>
+                                <td style="padding: 2px 6px; font-weight: 600; color: #555;">Phone:</td>
+                                <td style="padding: 2px 6px;">575757</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px 6px; font-weight: 600; color: #555;">undefined:</td>
+                                <td colspan="3" style="padding: 2px 6px;">N/A</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px 6px; font-weight: 600; color: #555;">Address:</td>
+                                <td colspan="3" style="padding: 2px 6px;">kismayo</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Photo on Right -->
+                <div style="flex-shrink: 0;">
+                    <div style="width: 85px; height: 105px; background: white; display: flex; align-items: center; justify-content: center; font-size: 28pt; font-weight: bold; color: #e74c3c; border: 2px solid white; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">m</div>
+                </div>
+            </div>
+            
+            <!-- All Other Sections Below -->
+            <div style="padding: 10px 12px; background: #ffffff;">
+                
+                <!-- Statements & Investigation Notes -->
+                <div style="margin-bottom: 12px;"><div class="subsection-title" style="padding: 6px 10px; font-size: 10pt; margin-bottom: 8px;">?? STATEMENTS & NOTES</div><table class="info-table">
+                <tr>
+                    <td style="vertical-align: top; width: 30%;">
+                        <strong>INVESTIGATION</strong><br>
+                        <span style="font-size: 9pt; color: #666;">Jan 20, 2026, 10:12 PM</span><br>
+                        <span style="font-size: 9pt; color: #666;">by: kazaama baare</span>
+                    </td>
+                    <td style="white-space: pre-wrap; line-height: 1.6;">sdzxc</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; width: 30%;">
+                        <strong>INVESTIGATION</strong><br>
+                        <span style="font-size: 9pt; color: #666;">Jan 20, 2026, 10:12 PM</span><br>
+                        <span style="font-size: 9pt; color: #666;">by: kazaama baare</span>
+                    </td>
+                    <td style="white-space: pre-wrap; line-height: 1.6;">sdzxc</td>
+                </tr></table></div>
+                
+                <!-- Evidence Collected From This Person -->
+                <div style="margin-bottom: 12px;"><div class="subsection-title" style="padding: 6px 10px; font-size: 10pt; margin-bottom: 8px;">??? EVIDENCE</div><div style="color: #999; font-style: italic; padding: 6px; font-size: 9pt;">No evidence collected</div></div>
+                
+                <!-- Supporting Witnesses -->
+                <div style="margin-bottom: 12px;"><div class="subsection-title" style="padding: 6px 10px; font-size: 10pt; margin-bottom: 8px;">?? SUPPORTING WITNESSES</div><div style="color: #999; font-style: italic; padding: 6px; font-size: 9pt;">No supporting witnesses</div></div>
+            </div>
+        </div>
+        <h2 class="section-header" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); page-break-before: always; page-break-after: avoid;">?? SECTION 2: ACCUSERS/VICTIMS</h2>
+        <div class="person-file" style="page-break-inside: avoid; border: 3px solid #27ae60; box-shadow: 0 2px 6px rgba(39,174,96,0.2);">
+            <!-- Photo and Basic Info Section at Top -->
+            <div style="background: #27ae60; padding: 8px 12px; border-bottom: 3px solid #229954; display: flex; gap: 12px; align-items: center;">
+                <!-- Info on Left -->
+                <div style="flex: 1;">
+                    <div style="color: white; font-size: 12pt; font-weight: bold; margin-bottom: 6px;">?? undefined #1: abdi  noor farax</div>
+                    <div style="background: white; padding: 6px; border: 2px solid #229954; border-radius: 3px;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 8.5pt;">
+                            <tr>
+                                <td style="padding: 2px 6px; width: 18%; font-weight: 600; color: #555;">undefined:</td>
+                                <td style="padding: 2px 6px; width: 32%; border-right: 1px solid #ddd;">47474747</td>
+                                <td style="padding: 2px 6px; width: 18%; font-weight: 600; color: #555;">undefined:</td>
+                                <td style="padding: 2px 6px; width: 32%;">male</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px 6px; font-weight: 600; color: #555;">undefined:</td>
+                                <td style="padding: 2px 6px; border-right: 1px solid #ddd;">N/A</td>
+                                <td style="padding: 2px 6px; font-weight: 600; color: #555;">undefined:</td>
+                                <td style="padding: 2px 6px;">646464</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px 6px; font-weight: 600; color: #555;">undefined:</td>
+                                <td colspan="3" style="padding: 2px 6px;">N/A</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px 6px; font-weight: 600; color: #555;">undefined:</td>
+                                <td colspan="3" style="padding: 2px 6px;">kismayo</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Photo on Right -->
+                <div style="flex-shrink: 0;">
+                    <div style="width: 85px; height: 105px; background: white; display: flex; align-items: center; justify-content: center; font-size: 28pt; font-weight: bold; color: #27ae60; border: 2px solid white; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">a</div>
+                </div>
+            </div>
+            
+            <!-- All Other Sections Below -->
+            <div style="padding: 10px 12px; background: #ffffff;">
+                
+                <!-- Statements & Investigation Notes -->
+                <div style="margin-bottom: 12px;"><div class="subsection-title" style="padding: 6px 10px; font-size: 10pt; margin-bottom: 8px;">?? STATEMENTS & NOTES</div><div style="color: #999; font-style: italic; padding: 6px; font-size: 9pt;">No statements recorded</div></div>
+                
+                <!-- Evidence Collected From This Person -->
+                <div style="margin-bottom: 12px;"><div class="subsection-title" style="padding: 6px 10px; font-size: 10pt; margin-bottom: 8px;">??? EVIDENCE</div><div style="color: #999; font-style: italic; padding: 6px; font-size: 9pt;">No evidence collected</div></div>
+                
+                <!-- Supporting Witnesses -->
+                <div style="margin-bottom: 12px;"><div class="subsection-title" style="padding: 6px 10px; font-size: 10pt; margin-bottom: 8px;">?? SUPPORTING WITNESSES</div><div style="color: #999; font-style: italic; padding: 6px; font-size: 9pt;">No supporting witnesses</div></div>
+            </div>
+        </div>
+        <h2 class="section-header" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); page-break-before: always; page-break-after: avoid;">?? SECTION 4: CRIME SCENE EVIDENCE</h2><div style="background: #fef5e7; padding: 15px; margin: 15px 0; border-radius: 5px; border: 1px solid #f39c12;"><table class="info-table"><tr style="background: #fff; font-weight: bold;"><td style="width: 5%;">undefined</td><td style="width: 15%;">Type</td><td style="width: 35%;">Description</td><td style="width: 20%;">Collected</td><td style="width: 25%;">undefined</td></tr></table></div><h2 class="section-header">SECTION 5: CASE TIMELINE</h2><div style="padding: 15px; background: #f8f9fa;">
+            <div style="padding: 10px; margin: 10px 0; background: white; border-left: 3px solid #3498db;">
+                <div style="font-weight: bold;">Jan 20, 2026, 09:36 PM - ASSIGNED</div>
+                <div style="font-size: 9pt; color: #666;">Changed by: abdixakin taliye</div>
+                
+            </div></div><div style="margin: 30px 0;"><h2 style="color: #2c3e50; font-size: 16pt; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #3498db;">CASE ASSIGNMENTS</h2><ul style="margin: 20px 0;"><li style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>kazaama baare</strong> - Investigator</li></ul></div><div style="padding: 20px; background: #f8f9fa; margin: 20px 0;"><p>No investigator conclusions recorded.</p></div>
+                <div style="margin: 30px 0;">
+                    <h2 style="color: #2c3e50; font-size: 16pt; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #3498db;">RECOMMENDATIONS</h2>
+                    <p style="padding: 15px; background: #f8f9fa; border-left: 4px solid #27ae60;">No recommendations provided.</p>
+                </div>
+            
+        
+        <!-- FOOTER -->
+        <div style="margin-top: 60px; padding-top: 30px; border-top: 2px solid #ddd;">
+            <!-- Signature Blocks and QR Code Section (Side by Side) -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 30px;">
+                <!-- Left side: Signature blocks -->
+                <div style="flex: 1;">
+                    
+                        <div style="white-space: pre-line; line-height: 2;">T/Xigeenka Saldhiga Dhexe Ee Degmada Kismaayo
+Dhamme C/Xakiin Yuusuf Ibraahim : ________________________________________
+</div>
+                    
+                </div>
+                
+                <!-- Right side: QR Code -->
+                <div style="width: 120px; text-align: center;">
+                    <div class="qr-code-container" id="qrCode" style="width: 120px; height: 120px; border: 2px solid #000; display: flex; align-items: center; justify-content: center; background: #f9f9f9; margin-bottom: 5px;"></div>
+                    <div style="font-size: 10px; font-weight: bold;">Scan to Verify</div>
+                </div>
+            </div>
+            
+            <!-- Footer text at the bottom -->
+            <div style="margin-top: 30px; text-align: center; color: #666; font-size: 10px; border-top: 1px solid #eee; padding-top: 15px;">
+                <p>This is an official police case report generated on Jan 21, 2026, 01:22 AM</p>
+                <p>Report ID: CASE/XGD-01/2026/0025 | Generated by: Police Case Management System</p>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
+    

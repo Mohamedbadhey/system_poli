@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Old Certificate Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .box {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .danger {
+            background: #ef4444;
+        }
+        .danger:hover {
+            background: #dc2626;
+        }
+        .result {
+            background: #f0f9ff;
+            border: 1px solid #3b82f6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+        .result.show {
+            display: block;
+        }
+        h1 {
+            color: #1f2937;
+        }
+        h2 {
+            color: #374151;
+            font-size: 18px;
+        }
+        .warning {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧹 Clear Old Certificate Data</h1>
+    
+    <div class="warning">
+        ⚠️ <strong>Important:</strong> This will clear old localStorage data that might be causing quota errors.
+        Your certificates in the database are safe.
+    </div>
+    
+    <div class="box">
+        <h2>Current localStorage Status</h2>
+        <div id="status">Checking...</div>
+    </div>
+    
+    <div class="box">
+        <h2>Actions</h2>
+        <button onclick="checkStorage()">Check Storage</button>
+        <button onclick="clearOldData()" class="danger">Clear Old Data</button>
+        <button onclick="clearAll()" class="danger">Clear Everything</button>
+        <div id="result" class="result"></div>
+    </div>
+    
+    <script>
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+        
+        function checkStorage() {
+            const status = document.getElementById('status');
+            const result = document.getElementById('result');
+            
+            let html = '<h3>localStorage Items:</h3>';
+            
+            // Check nc_certificates
+            const certs = localStorage.getItem('nc_certificates');
+            if (certs) {
+                const parsed = JSON.parse(certs);
+                html += `<p>📋 <strong>nc_certificates:</strong> ${parsed.length} certificates, ${formatBytes(certs.length)}</p>`;
+                
+                // Check if any have large photo data
+                let hasLargePhotos = false;
+                parsed.forEach(cert => {
+                    if (cert.photo_path && cert.photo_path.length > 10000) {
+                        hasLargePhotos = true;
+                    }
+                });
+                if (hasLargePhotos) {
+                    html += '<p style="color: #ef4444;">⚠️ Contains certificates with large photo data (causes quota error)</p>';
+                }
+            } else {
+                html += '<p>📋 <strong>nc_certificates:</strong> None</p>';
+            }
+            
+            // Check nc_cert_draft
+            const draft = localStorage.getItem('nc_cert_draft');
+            if (draft) {
+                html += `<p>📄 <strong>nc_cert_draft:</strong> ${formatBytes(draft.length)}</p>`;
+            } else {
+                html += '<p>📄 <strong>nc_cert_draft:</strong> None</p>';
+            }
+            
+            // Check nc_cert_photo
+            const photo = localStorage.getItem('nc_cert_photo');
+            if (photo) {
+                html += `<p>📸 <strong>nc_cert_photo:</strong> ${formatBytes(photo.length)}</p>`;
+                html += '<p style="color: #f59e0b;">⚠️ Temporary photo data (should be cleared)</p>';
+            } else {
+                html += '<p>📸 <strong>nc_cert_photo:</strong> None</p>';
+            }
+            
+            // Total size estimate
+            let totalSize = 0;
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    totalSize += localStorage.getItem(key).length;
+                }
+            }
+            
+            html += `<p><strong>Total localStorage size:</strong> ${formatBytes(totalSize)}</p>`;
+            
+            if (totalSize > 5000000) {
+                html += '<p style="color: #ef4444;">❌ <strong>WARNING:</strong> Size exceeds 5MB - may cause quota errors!</p>';
+            } else {
+                html += '<p style="color: #10b981;">✅ Size is within safe limits</p>';
+            }
+            
+            status.innerHTML = html;
+        }
+        
+        function clearOldData() {
+            const result = document.getElementById('result');
+            
+            if (!confirm('Clear old certificate data from localStorage?\n\n' +
+                'This will remove:\n' +
+                '- Draft certificates\n' +
+                '- Temporary photos\n' +
+                '- Large photo data from certificate list\n\n' +
+                'Your saved certificates in database are safe.')) {
+                return;
+            }
+            
+            // Remove draft and photo
+            localStorage.removeItem('nc_cert_draft');
+            localStorage.removeItem('nc_cert_photo');
+            localStorage.removeItem('nc_cert_auto_load');
+            
+            // Clean up nc_certificates - remove large photo data
+            const certs = localStorage.getItem('nc_certificates');
+            if (certs) {
+                try {
+                    const parsed = JSON.parse(certs);
+                    const cleaned = parsed.map(cert => {
+                        return {
+                            id: cert.id,
+                            backend_id: cert.backend_id,
+                            person_name: cert.person_name,
+                            ref_number: cert.ref_number,
+                            issue_date: cert.issue_date,
+                            saved_at: cert.saved_at,
+                            verification_url: cert.verification_url,
+                            verification_token: cert.verification_token
+                            // Remove photo_path, mother_name, gender, etc.
+                        };
+                    });
+                    localStorage.setItem('nc_certificates', JSON.stringify(cleaned));
+                    
+                    result.innerHTML = `
+                        <h3 style="color: #10b981;">✅ Success!</h3>
+                        <p>Cleaned ${parsed.length} certificates</p>
+                        <p>Removed large photo data</p>
+                        <p>Your certificate list is now lightweight</p>
+                        <button onclick="location.reload()" style="margin-top: 10px;">Refresh to See Changes</button>
+                    `;
+                } catch (e) {
+                    result.innerHTML = '<p style="color: #ef4444;">❌ Error cleaning certificates: ' + e.message + '</p>';
+                }
+            } else {
+                result.innerHTML = '<p style="color: #10b981;">✅ Drafts and photos cleared!</p>';
+            }
+            
+            result.classList.add('show');
+            checkStorage();
+        }
+        
+        function clearAll() {
+            const result = document.getElementById('result');
+            
+            if (!confirm('Clear ALL certificate data from localStorage?\n\n' +
+                '⚠️ WARNING: This will remove:\n' +
+                '- Certificate list\n' +
+                '- Drafts\n' +
+                '- Temporary photos\n\n' +
+                'Your saved certificates in database are safe.\n' +
+                'You can reload certificates from "My Certificates" button.')) {
+                return;
+            }
+            
+            localStorage.removeItem('nc_certificates');
+            localStorage.removeItem('nc_cert_draft');
+            localStorage.removeItem('nc_cert_photo');
+            localStorage.removeItem('nc_cert_auto_load');
+            
+            result.innerHTML = `
+                <h3 style="color: #10b981;">✅ Cleared!</h3>
+                <p>All certificate localStorage data removed</p>
+                <p>Your certificates in database are safe</p>
+                <button onclick="location.reload()" style="margin-top: 10px;">Refresh Page</button>
+            `;
+            result.classList.add('show');
+            checkStorage();
+        }
+        
+        // Auto-check on load
+        window.addEventListener('DOMContentLoaded', checkStorage);
+    </script>
+</body>
+</html>

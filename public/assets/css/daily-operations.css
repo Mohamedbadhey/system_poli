@@ -1,0 +1,543 @@
+/* ============================================
+   DAILY OPERATIONS DASHBOARD STYLES
+   ============================================ */
+
+.daily-operations-dashboard {
+    padding: 20px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.page-header .header-left h2 {
+    margin: 0;
+    font-size: 28px;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-header .header-left .subtitle {
+    color: #64748b;
+    margin: 5px 0 0 0;
+    font-size: 14px;
+}
+
+.page-header .header-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filters-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.period-filter select {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Advanced Filters Panel */
+.advanced-filters-panel {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: #475569;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-group .form-control {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Statistics Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+}
+
+.stat-card.stat-primary .stat-icon {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.stat-card.stat-info .stat-icon {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+}
+
+.stat-card.stat-success .stat-icon {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.stat-card.stat-warning .stat-icon {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.stat-card.stat-certificate .stat-icon {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.stat-card.stat-medical .stat-icon {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+}
+
+.stat-content h3 {
+    margin: 0;
+    font-size: 32px;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.stat-content p {
+    margin: 5px 0 0 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Charts Grid */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-card h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-card canvas {
+    max-height: 300px;
+}
+
+/* Operations Sections */
+.operations-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-card h3 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.section-card .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+    font-size: 16px;
+}
+
+/* Table Styles */
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.table thead {
+    background-color: #f8fafc;
+}
+
+.table thead th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #1e293b;
+}
+
+.table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Badge Styles */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.badge.badge-success {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.badge.badge-info {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.badge.badge-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.badge.badge-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.badge.badge-secondary {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+/* Button Styles */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    color: white;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(14, 165, 233, 0.3);
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .charts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .page-header .header-right {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-responsive {
+        overflow-x: scroll;
+    }
+}
+
+/* Print Styles */
+@media print {
+    /* Hide navigation and non-essential elements */
+    #sidebar,
+    #navbar,
+    .page-header .header-right,
+    .advanced-filters-panel,
+    .btn,
+    button {
+        display: none !important;
+    }
+    
+    /* Reset page styles for printing */
+    body {
+        background: white;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    .daily-operations-dashboard {
+        padding: 0;
+        width: 100%;
+    }
+    
+    .page-header {
+        margin-bottom: 20px;
+        border-bottom: 3px solid #2563eb;
+        padding-bottom: 15px;
+    }
+    
+    .page-header .header-left h2 {
+        font-size: 24pt;
+        color: #000;
+    }
+    
+    .page-header .header-left .subtitle {
+        font-size: 12pt;
+        color: #333;
+    }
+    
+    /* Statistics Grid - Make print-friendly */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+    }
+    
+    .stat-card {
+        border: 2px solid #e2e8f0;
+        padding: 15px;
+        box-shadow: none;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .stat-content h3 {
+        font-size: 24pt;
+    }
+    
+    /* Charts - Hide on print (images don't print well) */
+    .charts-grid {
+        display: none;
+    }
+    
+    /* Section Cards */
+    .section-card {
+        page-break-inside: avoid;
+        margin-bottom: 15px;
+        border: 1px solid #e2e8f0;
+        padding: 15px;
+        box-shadow: none;
+    }
+    
+    .section-card h3 {
+        background: #f1f5f9;
+        color: #000;
+        padding: 8px 12px;
+        margin: -15px -15px 10px -15px;
+        border-bottom: 2px solid #cbd5e1;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    /* Tables */
+    .table {
+        font-size: 9pt;
+        border-collapse: collapse;
+    }
+    
+    .table thead th {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        padding: 6px 4px;
+        font-size: 8pt;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .table tbody td {
+        border: 1px solid #e2e8f0;
+        padding: 5px 4px;
+        font-size: 8pt;
+    }
+    
+    .table tbody tr:nth-child(even) {
+        background: #f8fafc;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    /* Badges */
+    .badge {
+        border: 1px solid #333;
+        padding: 2px 6px;
+        font-size: 7pt;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    /* Force page breaks where needed */
+    .operations-sections > .section-card:nth-child(3) {
+        page-break-before: always;
+    }
+    
+    /* Print header on each page */
+    @page {
+        margin: 1.5cm;
+        
+        @top-center {
+            content: "Daily Operations Report - Jubaland Police";
+            font-size: 10pt;
+            font-weight: bold;
+        }
+        
+        @bottom-right {
+            content: "Page " counter(page) " of " counter(pages);
+            font-size: 9pt;
+        }
+    }
+    
+    /* Add print timestamp */
+    .daily-operations-dashboard::after {
+        content: "Printed on: " attr(data-print-date);
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid #e2e8f0;
+        font-size: 8pt;
+        color: #64748b;
+    }
+}

@@ -1,0 +1,216 @@
+/* ============================================
+   INVESTIGATOR CONCLUSION EDITOR STYLES
+   ============================================ */
+
+.conclusion-editor {
+    padding: 20px;
+    background: #fff;
+}
+
+.conclusion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.conclusion-title-section h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.conclusion-title-section p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.conclusion-status {
+    text-align: right;
+}
+
+.conclusion-status .badge {
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
+.conclusion-form .form-group {
+    margin-bottom: 30px;
+}
+
+.conclusion-form label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.conclusion-form label i {
+    color: #3498db;
+    margin-right: 8px;
+}
+
+.conclusion-textarea {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    resize: vertical;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+    transition: border-color 0.3s;
+}
+
+.conclusion-textarea:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.conclusion-textarea[readonly] {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.conclusion-form input[type="text"] {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+
+.conclusion-form input[type="text"]:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.conclusion-form input[readonly] {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.conclusion-meta {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.conclusion-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+.conclusion-actions .btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 6px;
+}
+
+.conclusion-actions .alert {
+    margin: 0;
+    flex: 1;
+}
+
+.auto-save-indicator {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #27ae60;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.auto-save-indicator.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.auto-save-indicator::before {
+    content: "✓ ";
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+/* Alert styles within conclusion */
+.conclusion-editor .alert {
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.conclusion-editor .alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+.conclusion-editor .alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+}
+
+/* Form text styles */
+.form-text.text-muted {
+    font-size: 13px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+/* Badge colors */
+.badge-secondary {
+    background-color: #6c757d;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .conclusion-header {
+        flex-direction: column;
+    }
+    
+    .conclusion-status {
+        text-align: left;
+        margin-top: 15px;
+    }
+    
+    .conclusion-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .conclusion-actions .btn {
+        width: 100%;
+    }
+}
+
+/* Print styles */
+@media print {
+    .conclusion-actions,
+    .auto-save-indicator {
+        display: none;
+    }
+}

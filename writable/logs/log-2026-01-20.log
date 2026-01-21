@@ -1,0 +1,403 @@
+ERROR - 2026-01-20 09:25:08 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'pcms_db', 3306, '', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(715): CodeIgniter\Model->doFirst()
+#6 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\AuthController.php(36): CodeIgniter\BaseModel->first()
+#7 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\AuthController->login()
+#8 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AuthController))
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:246
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(715): CodeIgniter\Model->doFirst()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\AuthController.php(36): CodeIgniter\BaseModel->first()
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\AuthController->login()
+#7 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AuthController))
+#8 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#13 {main}
+ERROR - 2026-01-20 09:25:08 --> Login error: Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it | Trace: #0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(715): CodeIgniter\Model->doFirst()
+#4 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\AuthController.php(36): CodeIgniter\BaseModel->first()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\AuthController->login()
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AuthController))
+#7 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#12 {main}
+CRITICAL - 2026-01-20 09:54:23 --> TypeError: CodeIgniter\Database\BaseBuilder::setBind(): Argument #1 ($key) must be of type string, int given, called in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php on line 1575
+[Method: POST, Route: investigation/cases/30/close]
+in SYSTEMPATH\Database\BaseBuilder.php on line 3528.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1575): CodeIgniter\Database\BaseBuilder->setBind(0, '2026-01-20 09:54:22', true)
+ 2 SYSTEMPATH\Model.php(365): CodeIgniter\Database\BaseBuilder->set([...], '2026-01-20 09:54:22', true)
+ 3 SYSTEMPATH\BaseModel.php(838): CodeIgniter\Model->doInsert([...])
+ 4 SYSTEMPATH\Model.php(797): CodeIgniter\BaseModel->insert([...], true)
+ 5 APPPATH\Models\CaseStatusHistoryModel.php(37): CodeIgniter\Model->insert([...])
+ 6 APPPATH\Controllers\Investigation\CaseController.php(255): App\Models\CaseStatusHistoryModel->logStatusChange([...])
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Investigation\CaseController->closeCase('30')
+ 8 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\CaseController))
+ 9 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+ERROR - 2026-01-20 09:56:49 --> mysqli_sql_exception: Unknown column 'old_court_status' in 'field list' in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO cas...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO cas...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO cas...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\app\Models\CaseStatusHistoryModel.php(43): CodeIgniter\Database\BaseConnection->query('INSERT INTO cas...', Array)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\CaseController.php(255): App\Models\CaseStatusHistoryModel->logStatusChange(Array)
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\CaseController->closeCase('30')
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\CaseController))
+#7 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#12 {main}
+CRITICAL - 2026-01-20 12:43:01 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/solved-stats]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Investigation\\CaseController', true)
+ 4 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 12:43:02 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/all-solved]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Investigation\\CaseController', true)
+ 4 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 12:43:09 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/solved-stats]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Investigation\\CaseController', true)
+ 4 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 12:43:10 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/all-solved]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Investigation\\CaseController', true)
+ 4 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 13:01:03 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/solved-stats]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\Debug\Toolbar\Collectors\Routes.php(85): ReflectionMethod->__construct('\\App\\Controllers\\Investigation\\CaseController', 'getSolvedCasesStats')
+ 4 SYSTEMPATH\Debug\Toolbar\Collectors\BaseCollector.php(228): CodeIgniter\Debug\Toolbar\Collectors\Routes->display()
+ 5 SYSTEMPATH\Debug\Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+ 6 SYSTEMPATH\Debug\Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1768914062.975727, 0.1739, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+ 7 SYSTEMPATH\Filters\DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+ 8 SYSTEMPATH\Filters\Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+ 9 SYSTEMPATH\Filters\Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+10 SYSTEMPATH\CodeIgniter.php(407): CodeIgniter\Filters\Filters->runRequired('after')
+11 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+12 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+15 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 13:01:03 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/all-solved]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\Debug\Toolbar\Collectors\Routes.php(85): ReflectionMethod->__construct('\\App\\Controllers\\Investigation\\CaseController', 'getAllSolvedCases')
+ 4 SYSTEMPATH\Debug\Toolbar\Collectors\BaseCollector.php(228): CodeIgniter\Debug\Toolbar\Collectors\Routes->display()
+ 5 SYSTEMPATH\Debug\Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+ 6 SYSTEMPATH\Debug\Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1768914063.328493, 0.1289, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+ 7 SYSTEMPATH\Filters\DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+ 8 SYSTEMPATH\Filters\Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+ 9 SYSTEMPATH\Filters\Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+10 SYSTEMPATH\CodeIgniter.php(407): CodeIgniter\Filters\Filters->runRequired('after')
+11 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+12 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+15 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 13:01:41 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/solved-stats]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\Debug\Toolbar\Collectors\Routes.php(85): ReflectionMethod->__construct('\\App\\Controllers\\Investigation\\CaseController', 'getSolvedCasesStats')
+ 4 SYSTEMPATH\Debug\Toolbar\Collectors\BaseCollector.php(228): CodeIgniter\Debug\Toolbar\Collectors\Routes->display()
+ 5 SYSTEMPATH\Debug\Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+ 6 SYSTEMPATH\Debug\Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1768914101.269658, 0.1812, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+ 7 SYSTEMPATH\Filters\DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+ 8 SYSTEMPATH\Filters\Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+ 9 SYSTEMPATH\Filters\Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+10 SYSTEMPATH\CodeIgniter.php(407): CodeIgniter\Filters\Filters->runRequired('after')
+11 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+12 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+15 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 13:01:41 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/all-solved]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\Debug\Toolbar\Collectors\Routes.php(85): ReflectionMethod->__construct('\\App\\Controllers\\Investigation\\CaseController', 'getAllSolvedCases')
+ 4 SYSTEMPATH\Debug\Toolbar\Collectors\BaseCollector.php(228): CodeIgniter\Debug\Toolbar\Collectors\Routes->display()
+ 5 SYSTEMPATH\Debug\Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+ 6 SYSTEMPATH\Debug\Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1768914101.671936, 0.1388, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+ 7 SYSTEMPATH\Filters\DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+ 8 SYSTEMPATH\Filters\Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+ 9 SYSTEMPATH\Filters\Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+10 SYSTEMPATH\CodeIgniter.php(407): CodeIgniter\Filters\Filters->runRequired('after')
+11 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+12 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+15 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 13:02:06 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/solved-stats]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Investigation\\CaseController', true)
+ 4 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+CRITICAL - 2026-01-20 13:02:07 --> ParseError: syntax error, unexpected token "\"
+[Method: GET, Route: investigation/cases/all-solved]
+in APPPATH\Controllers\Investigation\CaseController.php on line 1249.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\vendor\\composer/../../app/Controllers/Investigation/CaseController.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Investigation\\CaseController')
+ 3 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Investigation\\CaseController', true)
+ 4 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\hp\\Documents\\kismayo police\\systempolic\\public\\index.php')
+ERROR - 2026-01-20 21:55:02 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:55:02 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
+ERROR - 2026-01-20 21:55:32 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:55:32 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
+ERROR - 2026-01-20 21:56:02 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:56:02 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
+ERROR - 2026-01-20 21:56:32 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:56:32 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
+ERROR - 2026-01-20 21:57:02 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:57:02 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
+ERROR - 2026-01-20 21:57:32 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:57:32 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
+ERROR - 2026-01-20 21:58:02 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:58:02 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
+ERROR - 2026-01-20 21:58:32 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:58:32 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
+ERROR - 2026-01-20 21:59:02 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1 in C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('INSERT INTO `au...', 0)
+#1 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `au...')
+#2 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `au...')
+#3 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2345): CodeIgniter\Database\BaseConnection->query('INSERT INTO `au...', Array, false)
+#4 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(394): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\BaseModel.php(838): CodeIgniter\Model->doInsert(Array)
+#6 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Model.php(797): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(215): CodeIgniter\Model->insert(Array)
+#8 C:\Users\hp\Documents\kismayo police\systempolic\app\Controllers\Investigation\ConclusionController.php(111): App\Controllers\Investigation\ConclusionController->logActivity('13', 'conclusion_upda...')
+#9 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\Investigation\ConclusionController->save('13')
+#10 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Investigation\ConclusionController))
+#11 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\Users\hp\Documents\kismayo police\systempolic\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 C:\Users\hp\Documents\kismayo police\systempolic\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('C:\\Users\\hp\\Doc...')
+#16 {main}
+ERROR - 2026-01-20 21:59:02 --> Failed to log activity: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ') VALUES ('30', 'conclusion_updated', 'Investigator conclusion_updated for ca...' at line 1
